@@ -1,0 +1,27 @@
+{% extends "blog/base.html" %}
+
+
+{% block body %}
+
+    <div class="content-wrap">
+      <div class="content">
+{% for article in articles %}
+
+    <div class="post link-title-post">
+            <h2 class="title">
+              <a href="{{ url_for('blog.article', id=article.id) }}"><span>{{ article.title }}</span></a>
+            </h2>
+
+            <div class="abstract-content">
+              <div class="pp_part">
+                <p>
+                 {{ article.abstract }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+{% endfor %}
+      </div>
+    </div>
+{% endblock %}
