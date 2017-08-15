@@ -5,7 +5,7 @@ import time
 import codecs
 from datetime import date
 from flask_admin.contrib.sqla import ModelView
-from flask import redirect, request
+from flask import redirect, request, current_app
 from .models import Article, Category, Comment, Tag, Author
 from flask_admin import expose
 from .forms import ArticleForm
