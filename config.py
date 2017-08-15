@@ -1,4 +1,5 @@
 import os
+from flask_logging
 
 bpdir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'MagicPress')
 basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)))
@@ -15,6 +16,20 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
 
+    server_log = TimedRotatingFileHandler('server.log', 'D')
+    server_log.setLevel(logging.DEBUG)
+    server_log.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s'
+    ))
+
+    error_log = TimedRotatingFileHandler('error.log', 'D')
+    error_log.setLevel(logging.ERROR)
+    error_log.setFormatter(logging.Formatter(
+        '%(asctime)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    ))
+
+    app.logger.addHandler(server_log)
+    app.logger.addHandler(error_log)
     @staticmethod
     def init_app(app):
         pass
