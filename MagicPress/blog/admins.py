@@ -147,6 +147,8 @@ class ArticleView(BaseBlogView):
         the_article.abstract = article_form.abstract.data
         if article_form.print_submit.data:
             the_article.state = True
+        else:
+            the_article.state = False
         db.session.add(the_article)
         db.session.commit()
         filename = ' '.join(article_form.title.data.split())+'.md'

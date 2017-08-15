@@ -1,27 +1,45 @@
 {% extends "blog/base.html" %}
 
 
-{% block body %}
 
-    <div class="content-wrap">
-      <div class="content">
-{% for article in articles %}
 
-    <div class="post link-title-post">
-            <h2 class="title">
-              <a href="{{ url_for('blog.article', id=article.id) }}"><span>{{ article.title }}</span></a>
-            </h2>
 
-            <div class="abstract-content">
-              <div class="pp_part">
-                <p>
-                 {{ article.abstract }}
-                </p>
+ {% block body %}
+<div id="main">
+<div class="posts">
+    {% for article in articles %}
+      <div class="post">
+        <h2 class="title"><a href="{{ url_for('blog.article', article_id=article.id) }}">{{ article.title }}</a>
+        </h2>
+        <div class="info"><span>Published on</span>{{ article.create_time }}
+
+        </div>
+        <div class="post_body">
+          <div>
+              <div class="p_part">
+                  {% if article.photo %}
+                  <p><img src="{{ article.photo }}" alt=""></p>
+                    <p>{{ article.photo.information }}</p>
+                  {% endif %}
               </div>
-            </div>
+              {% if article.abstract %}
+              <div class="p_part">
+                    {{ article.abstract }}
+              </div>
+              {% endif %}
           </div>
-
-{% endfor %}
+        </div>
       </div>
-    </div>
+    {% endfor %}
+</div>
+<div class="clear"></div>
+<div class="pager">
+    {% if pagination.has_prev %}
+    <a href="{{ url_for('.index', page = pagination.page - 1) }}"  class="round pre">Pre</a>
+    {% endif %}
+    {% if pagination.has_next %}
+    <a href="{{ url_for('.index', page = pagination.page + 1) }}"  class="round next">Next</a>
+    {% endif %}
+</div>
+</div>
 {% endblock %}
