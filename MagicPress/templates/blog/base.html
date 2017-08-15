@@ -3,12 +3,15 @@
 <head>
 {% block head %}
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <meta content="yes" name="apple-mobile-web-app-capable">
-    <meta content="black" name="apple-mobile-web-app-status-bar-style">
-    <meta content="telephone=no" name="format-detection">
-    <meta name="renderer" content="webkit">
-    <title>I AM HUANGZP</title>
+    <meta name="description" content="我是个笨孩子，但老师说勤能补拙">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="城里 夜如海洋">
+    <meta property="og:url" content="www.huangzp.com">
+    <meta property="og:site_name" content="I AM HUANGZP">
+    <meta property="og:description" content="在苦心之后 看潮汐的永恒">
+    <meta property="og:keywords" content="python,data analysis,flask,machine learning,huangzp,magicroc">
+
+
 
     <link href="{{ url_for('static', filename='blog/css/blog.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='blog/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -53,7 +56,7 @@ The code is hosted on <a href="https://github.com/huang-zp/MagicPress" target="_
         <ul class="nav clearfix">
           <li><a href="#">Home</a>
           </li>
-          <li><a href="#">Categories</a>
+          <li><a href="{{ url_for('.category') }}">Categories</a>
           </li>
           <li><a href="#">Archive</a>
           </li>
