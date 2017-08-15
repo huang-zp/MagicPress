@@ -1,0 +1,11 @@
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+    </head>
+    <body onload="javascript:document.sub_form.submit();">
+        <form style="display: none" id="sub_form" name="sub_form" action="{{ url_for('.edit_get_form', article_id=request.args.get('id')) }}">
+            <input type="submit">
+        </form>
+    </body>
+    </html>
+

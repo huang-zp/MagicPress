@@ -1,0 +1,55 @@
+{% extends 'admin/model/create.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+
+{% block body %}
+    <script src="{{ url_for('static', filename='blog/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+<hr>
+    <br><br><br>
+
+    <a href="{{ url_for('.create_article') }}" id="do" class="button button-3d button-primary button-rounded">现场发挥</a>
+    <a id="from" class="button button-3d button-primary button-rounded">读取MD文件</a>
+
+
+    <form id='upload' action="{{ url_for('.do_file') }}" method="post" enctype="multipart/form-data">
+
+    <input id="lefile" type="file" style="display:none" name="file">
+    <div class="input-append">
+    <input id="photoCover" class="input-large" type="text" style="height:40px; length:300px;">
+    <a class="button button-glow button-border button-rounded button-primary" onclick="$('input[id=lefile]').click();">浏览文件</a>
+        <br><br>
+        <input type="submit" class="button button-raised button-primary button-pill" value="确定">
+        <a id="return" class="button button-glow button-rounded button-raised button-primary">返回</a>
+
+
+    </div>
+
+
+</form>
+
+<script type="text/javascript">
+$('input[id=lefile]').change(function() {
+$('#photoCover').val($(this).val());
+});
+</script>
+    <script type="text/javascript">
+    $("#upload").hide();
+$("#from").click(function(){
+    $("#do").hide();
+    $("#from").hide();
+    $("#upload").show();
+
+});
+
+$("#return").click(function(){
+    $("#do").show();
+    $("#from").show();
+    $("#upload").hide();
+
+});
+    </script>
+
+
+{% endblock %}

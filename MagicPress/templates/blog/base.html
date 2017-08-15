@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+{% block head %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='blog/css/style.css') }}">
+    <title>黄张朋</title>
+
+
+
+{% endblock %}
+  </head>
+
+{% block navbar %}
+    <div class="header-wrap">
+      <div class="header">
+        <a href="/" title="黄张朋" class="logo">黄张朋</a>
+        <div class="links">
+          <a href="">文章</a>
+          <a href="">书架</a>
+          <a href="">相册</a>
+          <a href="">作品</a>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+    <body>
+
+
+
+{% block body %}
+
+
+
+{% endblock %}
+
+
+
+
+
+</body>
+
+{% block foot %}
+    <div class="footer-wrap">
+        <div class="main-center footer">
+            <p>Powered by &nbsp;
+                <a href="www.huangzp.com">MagicPress &nbsp;</a>
+                Copyright © <a href="/links/about/">huangzp</a> 2017
+            </p>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+</html>
