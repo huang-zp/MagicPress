@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "blog/base.html" %}
 
-</body>
-</html>
+
+
+
+
+ {% block body %}
+<div id="main">
+<div class="posts">
+    {% for article in articles %}
+      <div class="post">
+        <h2 class="title"><a href="{{ url_for('blog.article', article_id=article.id) }}">{{ article.title }}</a>
+        </h2>
+        <div class="info"><span>Published on</span>{{ article.create_time }}
+
+        </div>
+        <div class="post_body">
+          <div>
+              <div class="p_part">
+                  {% if article.photo %}
+                  <p><img src="{{ article.photo }}" alt=""></p>
+                    <p>{{ article.photo.information }}</p>
+                  {% endif %}
+              </div>
+              {% if article.abstract %}
+              <div class="p_part">
+                    {{ article.abstract }}
+              </div>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+
+
+</div>
+{% endblock %}

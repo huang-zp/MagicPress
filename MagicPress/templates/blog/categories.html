@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block body %}
+    <div id="main">
+
+
+<ul id="categories" class="categories">
+    {% for category in categories %}
+  <li><a href="{{ url_for('.category', id=category.id) }}">
+      <h3>{{ category.name }}</h3><span>{{ category.articles |length }} posts</span></a>
+  </li>
+    {% endfor %}
+</ul>
+
+
+      </div>
+{% endblock %}
