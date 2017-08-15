@@ -8,6 +8,7 @@ from config import bpdir
 
 from MagicPress.blog import blog
 from .models import Article
+from MagicPress import db
 
 
 # @blog.route('/file', methods=["POST"])
@@ -25,10 +26,20 @@ from .models import Article
 
 @blog.route('/', methods=["GET", "POST"])
 def index():
-    articles = Article.query.filter_by(state=True).all()
-    return render_template('blog/index.html', articles=articles)
 
-@blog.route('/article/<int:id>', methods=["GET", "POST"])
-def article(id):
-    article = Article.query.filter_by(id=id).first()
-    return render_template('blog/article.html', article=article)
+    page = request.args.get('page', 1, type=int)
+    pagination = Article.query.order_by(Article.create_time.desc()).filter_by(state=True).paginate(
+        page, per_page=2, error_out=False
+    )
+    articles = pagination.items
+    return render_template('blog/index.html', articles=articles, pagination=pagination)
+
+
+@blog.route('/article/<int:article_id>', methods=["GET", "POST"])
+def article(article_id):
+
+    article = Article.query.filter_by(id=article_id).first()
+    next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
+    pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
+    return render_template('blog/article.html', article=article, next_article=next_article, pre_article=pre_article)
+

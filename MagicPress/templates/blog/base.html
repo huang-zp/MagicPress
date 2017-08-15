@@ -1,62 +1,69 @@
-
 <!DOCTYPE html>
-
 <html>
-
-  <head>
+<head>
 {% block head %}
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='blog/css/style.css') }}">
-    <title>黄张朋</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="renderer" content="webkit">
+    <title>I AM HUANGZP</title>
+
+    <link href="{{ url_for('static', filename='blog/css/blog.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='blog/css/font-awesome.min.css') }}" rel="stylesheet">
+{% endblock %}
+</head>
 
 
+
+{% block information %}
+    <div id="body_wrapper">
+      <header class="header">
+        <div class="header_wrapper">
+          <div class="logo"><img src="/static/blog/pic/me.png">
+          </div>
+          <h1 class="title"><a href="#">I AM HUANGZP</a>
+          </h1>
+          <div class="aboutInfo clearfix">
+            <div class="aboutMe">
+    This is based on the Flask website,the background based on Flask-admin<br> rewritten a little Flask-admin code. Use editor.md to integrate rich text editors<br>
+The code is hosted on <a href="https://github.com/huang-zp/MagicPress" target="_blank">GitHub</a>
+            </div>
+            <div class="followMe">
+    Embrace open source, like Python<br> have a strong interest in data analysis<br> hoping to be successful in the field of machine learning.
+            </div>
+          </div>
+        </div>
+      </header>
+{% endblock %}
+
+
+
+<body>
+{% block body %}
 
 {% endblock %}
-  </head>
+</body>
 
-{% block navbar %}
-    <div class="header-wrap">
-      <div class="header">
-        <a href="/" title="黄张朋" class="logo">黄张朋</a>
-        <div class="links">
-          <a href="">文章</a>
-          <a href="">书架</a>
-          <a href="">相册</a>
-          <a href="">作品</a>
+
+
+{% block footer %}
+      <div id="footer">
+        <ul class="nav clearfix">
+          <li><a href="#">Home</a>
+          </li>
+          <li><a href="#">Categories</a>
+          </li>
+          <li><a href="#">Archive</a>
+          </li>
+          <li><a href="#">Album</a>
+          </li>
+        </ul>
+        <div class="powered_by"><a href="https://github.com/huang-zp/MagicPress" target="_blank">Powered By MagicPress</a>
         </div>
       </div>
     </div>
-{% endblock %}
-
-    <body>
-
-
-
-{% block body %}
-
-
-
-{% endblock %}
-
-
-
-
-
-</body>
-
-{% block foot %}
-    <div class="footer-wrap">
-        <div class="main-center footer">
-            <p>Powered by &nbsp;
-                <a href="www.huangzp.com">MagicPress &nbsp;</a>
-                Copyright © <a href="/links/about/">huangzp</a> 2017
-            </p>
-        </div>
-    </div>
-
-
-
 {% endblock %}
 
 </html>
