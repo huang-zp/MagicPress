@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 # __author__ = 'huangzp'
+
 import os
 from flask import Flask
 from MagicPress.extensions import db, bootstrap, migrate
