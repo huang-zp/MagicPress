@@ -49,7 +49,17 @@ class ArticleView(BaseBlogView):
 
     form_excluded_columns = ['title', 'text']
 
-    column_formatters = dict(text=macro('render_text'), abstract=macro('render_abstract'))
+    # 覆盖path默认显示
+    def _list_thumbnail(view, context, model, name):
+        if not model.picture:
+            return ''
+        return Markup('<img src="%s">' % url_for('static',
+                                                 filename='blog/picture/' + 'thumb-' + model.picture.path))
+
+    column_formatters = dict(text=macro('render_text'), abstract=macro('render_abstract'), picture=_list_thumbnail)
+
+
+
 
 
     column_labels = {
@@ -115,9 +125,11 @@ class ArticleView(BaseBlogView):
         new_article.picture = article_form.picture.data
         if article_form.print_submit.data:
             new_article.state = True
-        the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
-        the_picture.state = False
-        db.session.add(new_article, the_picture)
+        if article_form.picture.data:
+            the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
+            the_picture.state = False
+            db.session.add(the_picture)
+        db.session.add(new_article)
         db.session.commit()
         filename = ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
@@ -165,10 +177,12 @@ class ArticleView(BaseBlogView):
         else:
             the_article.state = False
         #配图使用后更改状态
-        the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
-        the_picture.state = False
+        if article_form.picture.data:
+            the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
+            the_picture.state = False
+            db.session.add(the_picture)
 
-        db.session.add(the_article, the_picture)
+        db.session.add(the_article)
         db.session.commit()
         filename = ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
@@ -311,6 +325,20 @@ def del_image(mapper, connection, target):
 
 
 class PictureView(BaseBlogView):
+    column_list = ['id', 'abstract', 'name', 'state', 'create_time', 'article', 'location', 'weather', 'author_id', 'path']
+
+    column_labels = {
+        'id': u'序号',
+        'abstract': u'介绍',
+        'name': u'名字',
+        'state': u'状态',
+        'create_time': u'创建时间',
+        'article': u'文章',
+        'author_id': u'作者id',
+        'location': u'位置',
+        'weather': u'天气',
+        'path': u'缩略图'
+    }
 
     # 覆盖path默认显示
     def _list_thumbnail(view, context, model, name):
