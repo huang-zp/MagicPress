@@ -10,6 +10,7 @@
             <form method="POST" action="{{ url_for('.edit_to_save', article_id=article_id) }}">
                 {{ article_form.hidden_tag() }}
                 {{  wtf.form_field(article_form.title) }}
+                {{  wtf.form_field(article_form.picture) }}
                 {{  wtf.form_field(article_form.tags) }}
                 {{  wtf.form_field(article_form.category) }}
                 {{  wtf.form_field(article_form.abstract) }}

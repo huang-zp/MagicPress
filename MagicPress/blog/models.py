@@ -17,6 +17,8 @@ class Picture(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
     weather = db.Column(db.String(64))
     path = db.Column(db.String(128))
+    state = db.Column(db.Boolean, default=True)
+    articles = db.relationship('Article', backref='picture')
 
     def __repr__(self):
         return self.name
@@ -26,7 +28,7 @@ class Picture(db.Model):
 class Article(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
-    photo = db.Column(db.String(128))
+    picture_id = db.Column(db.Integer, db.ForeignKey('pictures.id'))
     abstract = db.Column(db.Text())
     title = db.Column(db.String(64), index=True)
     text = db.Column(db.Text())
