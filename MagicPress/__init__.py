@@ -6,7 +6,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from config import Config
 from MagicPress.blog.models import Author, Category, Comment, Article, Tag
-from MagicPress.blog.admins import ArticleView, CategoryView, CommentView, TagView, AuthorView
+from MagicPress.blog.admins import ArticleView, CategoryView, CommentView, TagView, AuthorView, PictureView
 
 
 
@@ -28,5 +28,6 @@ def create_app():
     admin.add_view(CategoryView(db.session))
     admin.add_view(ArticleView(db.session))
     admin.add_view(TagView(db.session))
+    admin.add_view(PictureView(db.session))
 
     return app

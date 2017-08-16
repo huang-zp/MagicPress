@@ -7,6 +7,23 @@ articles_tags = db.Table('articles_tags',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')))
 
 
+
+class Picture(db.Model):
+    __tablename__ = 'pictures'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    abstract = db.Column(db.Text())
+    location = db.Column(db.String(64))
+    create_time = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
+    weather = db.Column(db.String(64))
+    path = db.Column(db.String(128))
+
+    def __repr__(self):
+        return self.name
+
+
+
 class Article(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
