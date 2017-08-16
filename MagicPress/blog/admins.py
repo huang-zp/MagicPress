@@ -5,14 +5,16 @@ import time
 import codecs
 from datetime import date
 from flask_admin.contrib.sqla import ModelView
-from flask import redirect, request, current_app
-from .models import Article, Category, Comment, Tag, Author
-from flask_admin import expose
+from flask import redirect, request, current_app, url_for
+from .models import Article, Category, Comment, Tag, Author, Picture
+from flask_admin import expose, form
 from .forms import ArticleForm
 from MagicPress.extensions import db
 from config import bpdir, ALLOWED_file_EXTENSIONS, ALLOWED_photo_EXTENSIONS
 from werkzeug.utils import secure_filename
 from flask_admin.model.template import macro
+from sqlalchemy.event import listens_for
+from jinja2 import Markup
 
 def allowed_photo(filename):
     return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_photo_EXTENSIONS
@@ -271,5 +273,57 @@ class AuthorView(BaseBlogView):
     def __init__(self, session, **kwargs):
         super(AuthorView, self).__init__(Author, session, **kwargs)
 
+# 钩子函数，Picture删除数据后执行
+@listens_for(Picture, 'after_delete')
+def del_image(mapper, connection, target):
+    if target.path:
+        # Delete image
+        try:
+            os.remove(os.path.join(bpdir, 'static/blog/picture', target.path))
+        except OSError:
+            pass
 
+        # Delete thumbnail
+        try:
+            os.remove(os.path.join(bpdir, 'static/blog/picture',
+                                   'thumb-' + target.path))
+        except OSError:
+            pass
+
+
+class PictureView(BaseBlogView):
+
+    # 覆盖path默认显示
+    def _list_thumbnail(view, context, model, name):
+        if not model.path:
+            return ''
+        print type(model.path)
+        return Markup('<img src="%s">' % url_for('static',
+                                                 filename='blog/picture/' + 'thumb-' + model.path))
+
+    column_formatters = {
+        'path': _list_thumbnail
+    }
+
+    # 处理上传图片名称
+    def prefix_name(obj, file_data):
+
+        parts = os.path.splitext(file_data.filename)
+        return parts[0]+parts[1]
+        #return secure_filename('file-%s%s' % (parts[0].encode('utf-8'), parts[1]))
+    # 处理上传图片缩略图名称
+    def thumb_name(filename):
+        return 'thumb-'+filename
+
+    # Alternative way to contribute field is to override it completely.
+    # In this case, Flask-Admin won't attempt to merge various parameters for the field.
+    form_extra_fields = {
+        'path': form.ImageUploadField('Image',
+                                      base_path=os.path.join(bpdir, 'static/blog/picture'),
+                                      thumbnail_size=(100, 100, True),
+                                      namegen=prefix_name,
+                                      thumbgen=thumb_name)
+    }
+    def __init__(self, session, **kwargs):
+        super(PictureView, self).__init__(Picture, session, **kwargs)
 
