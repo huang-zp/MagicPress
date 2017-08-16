@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cba4e999-5eab-4836-8804-f512c2888078" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MagicPress/static/blog/picture/me.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MagicPress/static/blog/picture/thumb-me.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MagicPress/static/blog/picture/thumb-主页.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/MagicPress/static/blog/picture/主页.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/7769cf60-bc74-4f9a-939e-d7c9aa3f5189/_metadata_/metadata" afterPath="$PROJECT_DIR$/.idea/dataSources/7769cf60-bc74-4f9a-939e-d7c9aa3f5189/_metadata_/metadata" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/7769cf60-bc74-4f9a-939e-d7c9aa3f5189/_metadata_/metadata.values.at" afterPath="$PROJECT_DIR$/.idea/dataSources/7769cf60-bc74-4f9a-939e-d7c9aa3f5189/_metadata_/metadata.values.at" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MagicPress/blog/models.py" afterPath="$PROJECT_DIR$/MagicPress/blog/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data.sqlite" afterPath="$PROJECT_DIR$/data.sqlite" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MagicPress/__init__.py" afterPath="$PROJECT_DIR$/MagicPress/__init__.py" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -127,10 +118,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MagicPress/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="52">
+              <caret line="2" column="9" lean-forward="true" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
+            <state relative-caret-position="1404">
               <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding />
             </state>
@@ -235,10 +236,10 @@
         <option value="$PROJECT_DIR$/MagicPress/templates/blog/categories.html" />
         <option value="$PROJECT_DIR$/MagicPress/blog/views.py" />
         <option value="$PROJECT_DIR$/MagicPress/templates/blog/base.html" />
-        <option value="$PROJECT_DIR$/MagicPress/__init__.py" />
         <option value="$PROJECT_DIR$/MagicPress/blog/admins.py" />
         <option value="$PROJECT_DIR$/MagicPress/blog/models.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/MagicPress/__init__.py" />
       </list>
     </option>
   </component>
@@ -916,13 +917,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MagicPress/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Envs/flaskadmin/Lib/ntpath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -1017,6 +1011,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1404">
+          <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
@@ -1033,10 +1035,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
+    <entry file="file://$PROJECT_DIR$/MagicPress/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+        <state relative-caret-position="52">
+          <caret line="2" column="9" lean-forward="true" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
           <folding />
         </state>
       </provider>
