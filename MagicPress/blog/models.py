@@ -7,7 +7,6 @@ articles_tags = db.Table('articles_tags',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')))
 
 
-
 class Picture(db.Model):
     __tablename__ = 'pictures'
     id = db.Column(db.Integer, primary_key=True)
