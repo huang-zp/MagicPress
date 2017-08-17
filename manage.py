@@ -1,7 +1,8 @@
 
 from flask_script import Manager, Server, Shell
 from MagicPress import create_app, db
-from MagicPress.blog.models import Author, Article, Tag, Category, Comment
+from MagicPress.blog.models import Article, Tag, Category, Comment
+from MagicPress.auth.models import Author
 from flask_migrate import MigrateCommand
 
 app = create_app()

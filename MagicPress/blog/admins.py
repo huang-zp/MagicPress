@@ -6,7 +6,7 @@ import codecs
 from datetime import date
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, request, current_app, url_for
-from .models import Article, Category, Comment, Tag, Author, Picture
+from .models import Article, Category, Comment, Tag, Picture
 from flask_admin import expose, form
 from .forms import ArticleForm
 from MagicPress.extensions import db
@@ -317,23 +317,7 @@ class CategoryView(BaseBlogView):
         super(CategoryView, self).__init__(Category, session, **kwargs)
 
 
-class AuthorView(BaseBlogView):
 
-    column_list = ['id', 'name', 'categories', 'tags', 'comments', 'articles']
-
-    column_searchable_list = ['name']
-    column_filters = ['name']
-    column_labels = {
-        'id': u'序号',
-        'name': u'名字',
-        'categories': u'类别',
-        'tags': u'标签',
-        'comments': u'评论',
-        'articles': u'文章'
-    }
-
-    def __init__(self, session, **kwargs):
-        super(AuthorView, self).__init__(Author, session, **kwargs)
 
 # 钩子函数，Picture删除数据后执行
 @listens_for(Picture, 'after_delete')

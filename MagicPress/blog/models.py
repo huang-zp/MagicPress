@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from MagicPress import db
-
 articles_tags = db.Table('articles_tags',
                       db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')))
@@ -93,16 +92,3 @@ class Comment(db.Model):
     def __repr__(self):
         return self.text
 
-
-class Author(db.Model):
-    __tablename__ = 'authors'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, index=True)
-    articles = db.relationship('Article', backref='author')
-    categories = db.relationship('Category', backref='author')
-    tags = db.relationship('Tag', backref='author')
-    comments = db.relationship('Comment', backref='author')
-    location = db.Column(db.String(64))
-
-    def __repr__(self):
-        return self.name
