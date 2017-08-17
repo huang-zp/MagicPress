@@ -51,7 +51,7 @@ class ArticleView(BaseBlogView):
 
     # 覆盖path默认显示
     def _list_thumbnail(view, context, model, name):
-        if not model.picture:
+        if not model.picture or not model.picture.path:
             return ''
         return Markup('<img src="%s">' % url_for('static',
                                                  filename='blog/picture/' + 'thumb-' + model.picture.path))
@@ -130,7 +130,8 @@ class ArticleView(BaseBlogView):
 
         if article_form.picture.data:
             the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
-            the_picture.state = False
+            if the_picture.name != u'暂不选择配图':
+                the_picture.state = False
             db.session.add(the_picture)
         db.session.add(new_article)
         db.session.commit()
@@ -191,7 +192,8 @@ class ArticleView(BaseBlogView):
         #配图使用后更改状态
         if article_form.picture.data:
             the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
-            the_picture.state = False
+            if the_picture.name != u'暂不选择配图':
+                the_picture.state = False
             db.session.add(the_picture)
 
         db.session.add(the_article)
@@ -259,7 +261,7 @@ class CommentView(BaseBlogView):
 class TagView(BaseBlogView):
 
     def _list_thumbnail(view, context, model, name):
-        if not model.picture:
+        if not model.picture or not model.picture.path:
             return ''
         return Markup('<img src="%s">' % url_for('static',
                                                  filename='blog/picture/' + 'thumb-' + model.picture.path))
@@ -288,7 +290,7 @@ class TagView(BaseBlogView):
 class CategoryView(BaseBlogView):
 
     def _list_thumbnail(view, context, model, name):
-        if not model.picture:
+        if not model.picture or not model.picture.path:
             return ''
         return Markup('<img src="%s">' % url_for('static',
                                                  filename='blog/picture/' + 'thumb-' + model.picture.path))

@@ -2,8 +2,6 @@
 
 
 
-
-
  {% block body %}
 <div id="main">
 <div class="posts">
@@ -17,9 +15,9 @@
         <div class="post_body">
           <div>
               <div class="p_part">
-                  {% if article.photo %}
-                  <p><img src="{{ article.photo }}" alt=""></p>
-                    <p>{{ article.photo.information }}</p>
+                  {% if article.picture %}
+                  <p><img src="{{ url_for('static', filename='blog/picture/' + article.picture.path) }}" alt=""></p>
+                    <p>{{ article.picture.abstract }}</p>
                   {% endif %}
               </div>
               {% if article.abstract %}
