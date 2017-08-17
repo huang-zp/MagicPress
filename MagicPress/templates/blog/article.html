@@ -14,7 +14,7 @@
         {{ article.html_text | safe }}
     </div>
     <div class="info"><span title="Public Date" class="date"><i class="fa fa-clock-o"></i>&nbsp;
-{{ article.create_time }}
+{{ moment(article.create_time).format('LLLL') }}
 </span><span title="Views" class="visitors"><i class="fa fa-user"></i>&nbsp;
 {{ article.visit_num }}
 </span>

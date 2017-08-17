@@ -9,13 +9,13 @@
       <div class="post">
         <h2 class="title"><a href="{{ url_for('blog.article', article_id=article.id) }}">{{ article.title }}</a>
         </h2>
-        <div class="info"><span>Published on</span>{{ article.create_time }}
+        <div class="info"><span>Published on</span>{{ moment(article.create_time).format('LLLL') }}
 
         </div>
         <div class="post_body">
           <div>
               <div class="p_part">
-                  {% if article.picture %}
+                  {% if article.picture and article.picture.path %}
                   <p><img src="{{ url_for('static', filename='blog/picture/' + article.picture.path) }}" alt=""></p>
                     <p>{{ article.picture.abstract }}</p>
                   {% endif %}

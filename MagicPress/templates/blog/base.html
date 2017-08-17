@@ -72,4 +72,8 @@ The code is hosted on <a href="https://github.com/huang-zp/MagicPress" target="_
     </div>
 {% endblock %}
 
+{% block scripts %}
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+{% endblock %}
 </html>

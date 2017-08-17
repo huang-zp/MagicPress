@@ -102,6 +102,7 @@ class Author(db.Model):
     categories = db.relationship('Category', backref='author')
     tags = db.relationship('Tag', backref='author')
     comments = db.relationship('Comment', backref='author')
+    location = db.Column(db.String(64))
 
     def __repr__(self):
         return self.name
