@@ -246,8 +246,14 @@ class CommentView(BaseBlogView):
 
 class TagView(BaseBlogView):
 
-    column_formatters = dict(abstract=macro('render_abstract'))
-    column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time', 'author_id']
+    def _list_thumbnail(view, context, model, name):
+        if not model.picture:
+            return ''
+        return Markup('<img src="%s">' % url_for('static',
+                                                 filename='blog/picture/' + 'thumb-' + model.picture.path))
+    column_formatters = dict(abstract=macro('render_abstract'), picture=_list_thumbnail)
+
+    column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time', 'author_id', 'picture']
 
     column_searchable_list = ['name', 'abstract']
     column_filters = ['name', 'create_time', 'hidden']
@@ -259,7 +265,8 @@ class TagView(BaseBlogView):
         'hidden': u'状态',
         'create_time': u'创建时间',
         'update_time': u'更新时间',
-        'author_id': u'作者id'
+        'author_id': u'作者id',
+        'picture': u'配图缩略图'
     }
 
     def __init__(self, session, **kwargs):
@@ -267,8 +274,15 @@ class TagView(BaseBlogView):
 
 
 class CategoryView(BaseBlogView):
-    column_formatters = dict(abstract=macro('render_abstract'))
-    column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time', 'articles', 'author_id']
+
+    def _list_thumbnail(view, context, model, name):
+        if not model.picture:
+            return ''
+        return Markup('<img src="%s">' % url_for('static',
+                                                 filename='blog/picture/' + 'thumb-' + model.picture.path))
+    column_formatters = dict(abstract=macro('render_abstract'), picture=_list_thumbnail)
+    column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time',
+                   'articles', 'author_id', 'picture']
 
     column_searchable_list = ['name', 'abstract']
     column_filters = ['name', 'create_time', 'hidden']
@@ -281,7 +295,8 @@ class CategoryView(BaseBlogView):
         'create_time': u'创建时间',
         'update_time': u'更新时间',
         'articles': u'文章',
-        'author_id': u'作者id'
+        'author_id': u'作者id',
+        'picture': u'配图缩略图'
     }
 
     def __init__(self, session, **kwargs):
@@ -300,7 +315,7 @@ class AuthorView(BaseBlogView):
         'categories': u'类别',
         'tags': u'标签',
         'comments': u'评论',
-        'articles': u'文章',
+        'articles': u'文章'
     }
 
     def __init__(self, session, **kwargs):

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 0db11c99e5d0
+Revision ID: 429ca048de5b
 Revises: 
-Create Date: 2017-08-16 21:56:58.723000
+Create Date: 2017-08-17 10:24:47.657000
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0db11c99e5d0'
+revision = '429ca048de5b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,21 +24,6 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_authors_name'), 'authors', ['name'], unique=True)
-    op.create_table('categories',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('photo', sa.String(length=128), nullable=True),
-    sa.Column('abstract', sa.Text(), nullable=True),
-    sa.Column('name', sa.String(length=64), nullable=True),
-    sa.Column('hidden', sa.Boolean(), nullable=True),
-    sa.Column('create_time', sa.DateTime(), nullable=True),
-    sa.Column('update_time', sa.DateTime(), nullable=True),
-    sa.Column('author_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['author_id'], ['authors.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_index(op.f('ix_categories_create_time'), 'categories', ['create_time'], unique=False)
-    op.create_index(op.f('ix_categories_name'), 'categories', ['name'], unique=True)
-    op.create_index(op.f('ix_categories_update_time'), 'categories', ['update_time'], unique=False)
     op.create_table('pictures',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
@@ -53,9 +38,9 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_pictures_create_time'), 'pictures', ['create_time'], unique=False)
-    op.create_table('tags',
+    op.create_table('categories',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('photo', sa.String(length=128), nullable=True),
+    sa.Column('picture_id', sa.Integer(), nullable=True),
     sa.Column('abstract', sa.Text(), nullable=True),
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('hidden', sa.Boolean(), nullable=True),
@@ -63,6 +48,23 @@ def upgrade():
     sa.Column('update_time', sa.DateTime(), nullable=True),
     sa.Column('author_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['author_id'], ['authors.id'], ),
+    sa.ForeignKeyConstraint(['picture_id'], ['pictures.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_categories_create_time'), 'categories', ['create_time'], unique=False)
+    op.create_index(op.f('ix_categories_name'), 'categories', ['name'], unique=True)
+    op.create_index(op.f('ix_categories_update_time'), 'categories', ['update_time'], unique=False)
+    op.create_table('tags',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('picture_id', sa.Integer(), nullable=True),
+    sa.Column('abstract', sa.Text(), nullable=True),
+    sa.Column('name', sa.String(length=64), nullable=True),
+    sa.Column('hidden', sa.Boolean(), nullable=True),
+    sa.Column('create_time', sa.DateTime(), nullable=True),
+    sa.Column('update_time', sa.DateTime(), nullable=True),
+    sa.Column('author_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['author_id'], ['authors.id'], ),
+    sa.ForeignKeyConstraint(['picture_id'], ['pictures.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tags_create_time'), 'tags', ['create_time'], unique=False)
@@ -128,12 +130,12 @@ def downgrade():
     op.drop_index(op.f('ix_tags_name'), table_name='tags')
     op.drop_index(op.f('ix_tags_create_time'), table_name='tags')
     op.drop_table('tags')
-    op.drop_index(op.f('ix_pictures_create_time'), table_name='pictures')
-    op.drop_table('pictures')
     op.drop_index(op.f('ix_categories_update_time'), table_name='categories')
     op.drop_index(op.f('ix_categories_name'), table_name='categories')
     op.drop_index(op.f('ix_categories_create_time'), table_name='categories')
     op.drop_table('categories')
+    op.drop_index(op.f('ix_pictures_create_time'), table_name='pictures')
+    op.drop_table('pictures')
     op.drop_index(op.f('ix_authors_name'), table_name='authors')
     op.drop_table('authors')
     # ### end Alembic commands ###

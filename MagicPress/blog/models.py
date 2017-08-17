@@ -19,6 +19,9 @@ class Picture(db.Model):
     path = db.Column(db.String(128))
     state = db.Column(db.Boolean, default=True)
     articles = db.relationship('Article', backref='picture')
+    tags = db.relationship('Tag', backref='picture')
+    categories = db.relationship('Category', backref='picture')
+
 
     def __repr__(self):
         return self.name
@@ -49,7 +52,7 @@ class Article(db.Model):
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
-    photo = db.Column(db.String(128))
+    picture_id = db.Column(db.Integer, db.ForeignKey('pictures.id'))
     abstract = db.Column(db.Text())
     name = db.Column(db.String(64), unique=True, index=True)
     hidden = db.Column(db.Boolean, default=False)
@@ -65,7 +68,7 @@ class Category(db.Model):
 class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
-    photo = db.Column(db.String(128))
+    picture_id = db.Column(db.Integer, db.ForeignKey('pictures.id'))
     abstract = db.Column(db.Text())
     name = db.Column(db.String(64), unique=True, index=True)
     hidden = db.Column(db.Boolean, default=False)

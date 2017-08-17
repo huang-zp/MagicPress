@@ -4,6 +4,9 @@ from wtforms import TextAreaField, SubmitField, StringField, SelectField, DateTi
 from wtforms.validators import DataRequired
 from .models import Tag, Category, Picture
 
+# Select fields keep a choices property which is a sequence of (value, label) pairs.
+# The value portion can be any type in theory, but as form data is sent by the browser as strings,
+# you will need to provide a function which can coerce the string representation back to a comparable object.
 
 def _string_to_tag(string):
     if isinstance(string, unicode):
