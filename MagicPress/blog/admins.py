@@ -135,7 +135,7 @@ class ArticleView(BaseBlogView):
         db.session.add(new_article)
         db.session.commit()
 
-        filename = str(date.today()) + '--' + ' '.join(article_form.title.data.split())+'.md'
+        filename = ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
 
@@ -152,7 +152,10 @@ class ArticleView(BaseBlogView):
         the_article = Article.query.filter_by(id=article_id).first()
 
         filename = ' '.join(the_article.title.split()) + '.md'
-        os.remove(bpdir+'/static/blog/mdfile/'+filename)
+        try:
+            os.remove(bpdir+'/static/blog/mdfile/'+filename)
+        except:
+            pass
 
         article_form.title.default = the_article.title
         article_form.text.default = the_article.text
