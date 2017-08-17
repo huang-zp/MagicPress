@@ -118,20 +118,24 @@ class ArticleView(BaseBlogView):
         article_form.category.choices = [(category, category.name) for category in Category.query.order_by('name')]
         article_form.picture.choices = [(picture, picture.name) for picture
                                         in Picture.query.order_by('name').filter_by(state=True)]
+
         new_article = Article(title=article_form.title.data, text=article_form.text.data, html_text=article_form.html.data)
         new_article.category = article_form.category.data
         new_article.abstract = article_form.abstract.data
         new_article.tags = article_form.tags.data
         new_article.picture = article_form.picture.data
+
         if article_form.print_submit.data:
             new_article.state = True
+
         if article_form.picture.data:
             the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
             the_picture.state = False
             db.session.add(the_picture)
         db.session.add(new_article)
         db.session.commit()
-        filename = ' '.join(article_form.title.data.split())+'.md'
+
+        filename = str(date.today()) + '--' + ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
 
@@ -144,9 +148,12 @@ class ArticleView(BaseBlogView):
         article_form.category.choices = [(category, category.name) for category in Category.query.order_by('name')]
         article_form.picture.choices = [(picture, picture.name) for picture in
                                         Picture.query.order_by('name').filter_by(state=True)]
+
         the_article = Article.query.filter_by(id=article_id).first()
+
         filename = ' '.join(the_article.title.split()) + '.md'
         os.remove(bpdir+'/static/blog/mdfile/'+filename)
+
         article_form.title.default = the_article.title
         article_form.text.default = the_article.text
         article_form.abstract.default = the_article.abstract
@@ -154,6 +161,7 @@ class ArticleView(BaseBlogView):
         article_form.tags.default = the_article.tags
         article_form.picture.default = the_article.picture
         article_form.process()
+
         return self.render('_edit_article.html', article_form=article_form, article_id=article_id)
 
     @expose('/edit_to_save/<article_id>', methods=["GET", "POST"])
@@ -163,6 +171,7 @@ class ArticleView(BaseBlogView):
         article_form.category.choices = [(category, category.name) for category in Category.query.order_by('name')]
         article_form.picture.choices = [(picture, picture.name) for picture in
                                         Picture.query.order_by('name').filter_by(state=True)]
+
         the_article = Article.query.filter_by(id=article_id).first()
         the_article.title = article_form.title.data
         the_article.tags = article_form.tags.data

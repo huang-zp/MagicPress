@@ -4,12 +4,13 @@ import os
 from flask import Flask
 from MagicPress.extensions import db, bootstrap, migrate
 from flask_admin import Admin
+from flask_admin.contrib import fileadmin
 from flask_admin.contrib.sqla import ModelView
-from config import Config
+from config import Config, bpdir
 from MagicPress.blog.models import Author, Category, Comment, Article, Tag
 from MagicPress.blog.admins import ArticleView, CategoryView, CommentView, TagView, AuthorView, PictureView
 
-
+path = os.path.join(bpdir, 'static/blog/mdfile')
 
 def create_app():
     app = Flask(__name__)
@@ -30,5 +31,7 @@ def create_app():
     admin.add_view(ArticleView(db.session))
     admin.add_view(TagView(db.session))
     admin.add_view(PictureView(db.session))
+    print bpdir
+    admin.add_view(fileadmin.FileAdmin(path, name='Files'))
 
     return app
