@@ -9,7 +9,7 @@ from config import bpdir
 from MagicPress.blog import blog
 from .models import Article, Category
 from MagicPress import db
-
+from flask_security import login_required
 
 # @blog.route('/file', methods=["POST"])
 # def file():
@@ -25,6 +25,7 @@ from MagicPress import db
 
 
 @blog.route('/', methods=["GET", "POST"])
+@login_required
 def index():
 
     page = request.args.get('page', 1, type=int)

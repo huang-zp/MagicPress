@@ -8,19 +8,44 @@
 {% endblock %}
 
 {% block page_body %}
+
 <div class="container">
   <div class="row">
     <div class="col-md-2" role="navigation">
       <ul class="nav nav-pills nav-stacked">
+
 	    {{ layout.menu() }}
 	    {{ layout.menu_links() }}
+
       </ul>
     </div>
+
+
+       {% block access_control %}
+<div class="navbar-text btn-group pull-right">
+    {% if current_user.is_authenticated %}
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <i class="glyphicon glyphicon-user"></i>
+            {{ current_user.name }}
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{ url_for('security.logout') }}">Log out</a></li>
+        </ul>
+    {% else %}
+        <a href="{{ url_for('security.login') }}"><span class="glyphicon glyphicon-log-in"></span> Log in</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+
     <div class="col-md-10">
+
       <div id="content" class="row">
+
     	{% block brand %}
     	<h2 id="brand">{{ admin_view.name|capitalize }}</h2>
     	{% endblock %}
+
     	{{ layout.messages() }}
 
 	{% set render_ctx = h.resolve_ctx() %}
@@ -31,3 +56,5 @@
   </div>
 </div>
 {% endblock %}
+
+

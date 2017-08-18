@@ -5,7 +5,7 @@ import time
 import codecs
 from datetime import date
 from flask_admin.contrib.sqla import ModelView
-from flask import redirect, request, current_app, url_for
+from flask import redirect, request, current_app, url_for, abort
 from .models import Article, Category, Comment, Tag, Picture
 from flask_admin import expose, form
 from .forms import ArticleForm
@@ -15,6 +15,9 @@ from werkzeug.utils import secure_filename
 from flask_admin.model.template import macro
 from sqlalchemy.event import listens_for
 from jinja2 import Markup
+from flask_security import current_user
+from flask_admin.contrib import fileadmin
+
 
 def allowed_photo(filename):
     return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_photo_EXTENSIONS
@@ -24,8 +27,22 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_file_EXTENSIONS
 
 
-
 class BaseBlogView(ModelView):
+
+    def is_accessible(self):
+        if not current_user.is_authenticated:
+            return False
+        if current_user.has_role('admin'):
+            return True
+        return False
+
+    def _handle_view(self, name, **kwargs):
+        if not self.is_accessible():
+            if current_user.is_authenticated:
+                abort(403)
+            else:
+                return redirect(url_for('security.login', next=request.url))
+
     list_template = 'list.html'
     create_template = 'blog_create.html'
     edit_template = 'edit.html'
@@ -387,3 +404,21 @@ class PictureView(BaseBlogView):
     def __init__(self, session, **kwargs):
         super(PictureView, self).__init__(Picture, session, **kwargs)
 
+
+class MdFileView(fileadmin.FileAdmin):
+
+    def is_accessible(self):
+        if not current_user.is_authenticated:
+            return False
+        if current_user.has_role('admin'):
+            return True
+        return False
+
+    def _handle_view(self, name, **kwargs):
+        if not self.is_accessible():
+            if current_user.is_authenticated:
+                abort(403)
+            else:
+                return redirect(url_for('security.login', next=request.url))
+
+    can_delete_dirs = False
