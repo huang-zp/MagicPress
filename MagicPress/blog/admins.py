@@ -42,7 +42,7 @@ class ArticleView(BaseBlogView):
     # column_exclude_list = ['abstract', 'text', 'comments']
 
     column_list = ['id', 'photo', 'abstract', 'title', 'text', 'create_time', 'update_time', 'state', 'category_id',
-                   'visit_num', 'category', 'tags', 'comments', 'author_id', 'picture']
+                   'visit_num', 'category', 'tags', 'comments', 'user_id', 'picture']
 
     column_searchable_list = ['title']
     column_filters = ['title', 'create_time', 'state']
@@ -75,7 +75,7 @@ class ArticleView(BaseBlogView):
         'category': u'类型',
         'tags': u'标签',
         'comments': u'评论',
-        'author_id': u'作者id',
+        'user_id': u'作者id',
         'visit_num': u'浏览次数',
         'picture': u'配图'
     }
@@ -237,7 +237,7 @@ class ArticleView(BaseBlogView):
 
 class CommentView(BaseBlogView):
 
-    column_list = ['id', 'text', 'hidden', 'create_time', 'update_time', 'article_id', 'author_id']
+    column_list = ['id', 'text', 'hidden', 'create_time', 'update_time', 'article_id', 'user_id']
 
     column_formatters = dict(text=macro('render_text'))
 
@@ -250,7 +250,7 @@ class CommentView(BaseBlogView):
         'create_time': u'创建时间',
         'update_time': u'更新时间',
         'article_id': u'文章id',
-        'author_id': u'作者id'
+        'user_id': u'作者id'
     }
 
 
@@ -267,7 +267,7 @@ class TagView(BaseBlogView):
                                                  filename='blog/picture/' + 'thumb-' + model.picture.path))
     column_formatters = dict(abstract=macro('render_abstract'), picture=_list_thumbnail)
 
-    column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time', 'author_id', 'picture']
+    column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time', 'user_id', 'picture']
 
     column_searchable_list = ['name', 'abstract']
     column_filters = ['name', 'create_time', 'hidden']
@@ -279,7 +279,7 @@ class TagView(BaseBlogView):
         'hidden': u'状态',
         'create_time': u'创建时间',
         'update_time': u'更新时间',
-        'author_id': u'作者id',
+        'user_id': u'作者id',
         'picture': u'配图缩略图'
     }
 
@@ -296,7 +296,7 @@ class CategoryView(BaseBlogView):
                                                  filename='blog/picture/' + 'thumb-' + model.picture.path))
     column_formatters = dict(abstract=macro('render_abstract'), picture=_list_thumbnail)
     column_list = ['id', 'photo', 'abstract', 'name', 'hidden', 'create_time', 'update_time',
-                   'articles', 'author_id', 'picture']
+                   'articles', 'user_id', 'picture']
 
     column_searchable_list = ['name', 'abstract']
     column_filters = ['name', 'create_time', 'hidden']
@@ -309,7 +309,7 @@ class CategoryView(BaseBlogView):
         'create_time': u'创建时间',
         'update_time': u'更新时间',
         'articles': u'文章',
-        'author_id': u'作者id',
+        'user_id': u'作者id',
         'picture': u'配图缩略图'
     }
 
@@ -338,7 +338,7 @@ def del_image(mapper, connection, target):
 
 
 class PictureView(BaseBlogView):
-    column_list = ['id', 'abstract', 'name', 'state', 'create_time', 'article', 'location', 'weather', 'author_id', 'path']
+    column_list = ['id', 'abstract', 'name', 'state', 'create_time', 'article', 'location', 'weather', 'user_id', 'path']
 
     column_labels = {
         'id': u'序号',
@@ -347,7 +347,7 @@ class PictureView(BaseBlogView):
         'state': u'状态',
         'create_time': u'创建时间',
         'article': u'文章',
-        'author_id': u'作者id',
+        'user_id': u'作者id',
         'location': u'位置',
         'weather': u'天气',
         'path': u'缩略图'

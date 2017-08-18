@@ -7,8 +7,8 @@ from flask_admin import Admin
 from flask_admin.contrib import fileadmin
 from flask_admin.contrib.sqla import ModelView
 from config import Config, bpdir
-from MagicPress.auth.models import Author
-from MagicPress.auth.admins import AuthorView
+from MagicPress.auth.models import User
+from MagicPress.auth.admins import UserView
 from MagicPress.blog.models import Category, Comment, Article, Tag
 from MagicPress.blog.admins import ArticleView, CategoryView, CommentView, TagView, PictureView
 
@@ -28,7 +28,7 @@ def create_app():
     from .auth import auth as auth_blueprint
     app.register_blueprint(blog_blueprint)
     app.register_blueprint(auth_blueprint)
-    admin.add_view(AuthorView(db.session, name=u'作者'))
+    admin.add_view(UserView(db.session, name=u'作者'))
     # admin.add_view(CommentView(db.session, category=u'Blog'))
     admin.add_view(ArticleView(db.session, name=u'文章'))
     admin.add_view(CategoryView(db.session, name=u'分类'))

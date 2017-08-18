@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from .models import Author
+from .models import User
 from MagicPress.blog.admins import BaseBlogView
 
-class AuthorView(BaseBlogView):
+class UserView(BaseBlogView):
 
     column_list = ['id', 'name', 'categories', 'tags', 'comments', 'articles']
 
@@ -18,4 +18,4 @@ class AuthorView(BaseBlogView):
     }
 
     def __init__(self, session, **kwargs):
-        super(AuthorView, self).__init__(Author, session, **kwargs)
+        super(UserView, self).__init__(User, session, **kwargs)
