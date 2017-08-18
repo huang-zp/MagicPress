@@ -20,15 +20,15 @@ class Config:
     SECURITY_PASSWORD_SALT = 'xxxxxxxxxxxxxxxxx'
 
 
-    SECURITY_URL_PREFIX = "/admin"
+    SECURITY_URL_PREFIX = "/huangzp"
 
     SECURITY_LOGIN_URL = "/login/"
     SECURITY_LOGOUT_URL = "/logout/"
     SECURITY_REGISTER_URL = "/register/"
 
-    SECURITY_POST_LOGIN_VIEW = "/admin/"
-    SECURITY_POST_LOGOUT_VIEW = "/admin/"
-    SECURITY_POST_REGISTER_VIEW = "/admin/"
+    SECURITY_POST_LOGIN_VIEW = "/huangzp/"
+    SECURITY_POST_LOGOUT_VIEW = "/huangzp/"
+    SECURITY_POST_REGISTER_VIEW = "/huangzp/"
 
     @staticmethod
     def init_app(app):

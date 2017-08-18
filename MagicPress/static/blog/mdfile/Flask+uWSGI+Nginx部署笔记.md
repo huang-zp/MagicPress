@@ -1,14 +1,7 @@
----
-title: Flask+uWSGI+Nginx部署笔记
-date: 2017-04-05 19:19:53
-tags: [Flask , Python , uWSGI , Nginx]
-categories: 实践经验
----
 
 >**其实简单部署Flask程序很简单，只要掌握了流程和每一层的作用。本来应该再加上Supervisor，不过我还没有尝试，先总结下来uWSGI和Nginx以及遇到的一些小问题以及解决办法**
 
-<!--more-->
-![配图](4.jpg)
+
 # 环境
  **本地环境：Ubuntu16.04
  服务器：Centos7.0
@@ -159,8 +152,7 @@ uwsgi 关闭：虚拟环境下killall -9 uwsgi
 
 
 # 部署说明
-
-![部署图](1.png)
+![](/static/editor.md/photoupdate/2017-08-15--1111.png)
 
 * uWSGI 提高并发访问支持，提高服务运行稳定性
 * Nginx在这里最基本的一个用处就是转发：当客户访问一个域名或者IP时 Nginx就将访问转发给uwsgi处理

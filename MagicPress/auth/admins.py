@@ -3,6 +3,7 @@ from .models import User, Role
 from MagicPress.blog.admins import BaseBlogView
 from flask_security import current_user
 from flask import abort, redirect, request, url_for
+from flask_admin import BaseView, expose
 
 
 class UserView(BaseBlogView):
@@ -37,3 +38,9 @@ class RoleView(BaseBlogView):
 
     def __init__(self, session, **kwargs):
         super(RoleView, self).__init__(Role, session, **kwargs)
+
+
+class BackView(BaseView):
+    @expose('/')
+    def index(self):
+        return redirect(url_for('blog.index'))

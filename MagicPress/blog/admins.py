@@ -157,7 +157,7 @@ class ArticleView(BaseBlogView):
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
 
-        return redirect('/admin/article')
+        return redirect('/huangzp/article')
 
     @expose('/edit_get_form/<article_id>', methods=["GET", "POST"])
     def edit_get_form(self, article_id):
@@ -218,7 +218,7 @@ class ArticleView(BaseBlogView):
         filename = ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
-        return redirect('/admin/article')
+        return redirect('/huangzp/article')
 
     @expose('/do_file',methods=["POST"])
     def do_file(self):

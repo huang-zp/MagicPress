@@ -25,7 +25,6 @@ from flask_security import login_required
 
 
 @blog.route('/', methods=["GET", "POST"])
-@login_required
 def index():
 
     page = request.args.get('page', 1, type=int)
