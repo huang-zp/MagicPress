@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from MagicPress import db
+from random import Random
+from datetime import date
+
+def random_str(randomlength=5):
+    _str = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+    length = len(chars) - 1
+    random = Random()
+    for i in range(randomlength):
+        _str += chars[random.randint(0, length)]
+    return str(date.today()) + '-' + _str + '-'
 
 articles_tags = db.Table('articles_tags',
                       db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
@@ -10,7 +21,7 @@ articles_tags = db.Table('articles_tags',
 class Picture(db.Model):
     __tablename__ = 'pictures'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
+    name = db.Column(db.String(64), default=random_str)
     abstract = db.Column(db.Text())
     location = db.Column(db.String(64))
     create_time = db.Column(db.DateTime(), index=True, default=datetime.utcnow)

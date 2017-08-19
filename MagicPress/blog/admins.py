@@ -17,6 +17,17 @@ from sqlalchemy.event import listens_for
 from jinja2 import Markup
 from flask_security import current_user
 from flask_admin.contrib import fileadmin
+from random import Random
+
+
+def random_str(randomlength=5):
+    _str = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+    length = len(chars) - 1
+    random = Random()
+    for i in range(randomlength):
+        _str += chars[random.randint(0, length)]
+    return _str
 
 
 def allowed_photo(filename):
@@ -102,7 +113,7 @@ class ArticleView(BaseBlogView):
         image_file = request.files['editormd-image-file']
         if image_file and allowed_photo(image_file.filename):
             filename = secure_filename(image_file.filename)
-            filename = str(date.today()) + '--' + filename
+            filename = str(date.today()) + '-' + random_str() + '-' + filename
             print filename
             file_path = os.path.join(bpdir, 'static/editor.md/photoupdate/', filename)
             image_file.save(file_path)
@@ -169,6 +180,10 @@ class ArticleView(BaseBlogView):
 
         the_article = Article.query.filter_by(id=article_id).first()
 
+        # 修改文章默认配图
+        if the_article.picture and the_article.picture.name != u'暂不选择配图':
+            article_form.picture.choices.append((the_article.picture, the_article.picture.name))
+
         filename = ' '.join(the_article.title.split()) + '.md'
         try:
             os.remove(bpdir+'/static/blog/mdfile/'+filename)
@@ -194,6 +209,28 @@ class ArticleView(BaseBlogView):
                                         Picture.query.order_by('name').filter_by(state=True)]
 
         the_article = Article.query.filter_by(id=article_id).first()
+
+        # 有时候直接删除已经关联文章的照片，会造成文章的照片属性为空
+        if not the_article.picture:
+            new_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
+            if new_picture.name != u'暂不选择配图':
+                new_picture.state = False
+            db.session.add(new_picture)
+        else:
+            new_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
+            old_picture = Picture.query.filter_by(name=the_article.picture.name).first()
+            if new_picture == old_picture:
+                pass
+            elif new_picture.name == u'暂不选择配图':
+                new_picture.state = True
+                old_picture.state = True
+                db.session.add(new_picture, old_picture)
+            else:
+                new_picture.state = False
+                old_picture.state = True
+                db.session.add(new_picture, old_picture)
+
+
         the_article.title = article_form.title.data
         the_article.tags = article_form.tags.data
         the_article.category = article_form.category.data
@@ -206,12 +243,7 @@ class ArticleView(BaseBlogView):
             the_article.state = True
         else:
             the_article.state = False
-        #配图使用后更改状态
-        if article_form.picture.data:
-            the_picture = Picture.query.filter_by(name=article_form.picture.data.name).first()
-            if the_picture.name != u'暂不选择配图':
-                the_picture.state = False
-            db.session.add(the_picture)
+
 
         db.session.add(the_article)
         db.session.commit()
@@ -355,7 +387,7 @@ def del_image(mapper, connection, target):
 
 
 class PictureView(BaseBlogView):
-    column_list = ['id', 'abstract', 'name', 'state', 'create_time', 'article', 'location', 'weather', 'user_id', 'path']
+    column_list = ['id', 'abstract', 'name', 'state', 'create_time', 'articles', 'location', 'weather', 'user_id', 'path']
 
     column_labels = {
         'id': u'序号',
@@ -363,7 +395,7 @@ class PictureView(BaseBlogView):
         'name': u'名字',
         'state': u'状态',
         'create_time': u'创建时间',
-        'article': u'文章',
+        'articles': u'所关联文章',
         'user_id': u'作者id',
         'location': u'位置',
         'weather': u'天气',
@@ -386,7 +418,7 @@ class PictureView(BaseBlogView):
     def prefix_name(obj, file_data):
 
         parts = os.path.splitext(file_data.filename)
-        return parts[0]+parts[1]
+        return str(date.today()) + '-' + random_str() + '-' + parts[0]+parts[1]
         #return secure_filename('file-%s%s' % (parts[0].encode('utf-8'), parts[1]))
     # 处理上传图片缩略图名称
     def thumb_name(filename):
@@ -398,6 +430,7 @@ class PictureView(BaseBlogView):
         'path': form.ImageUploadField('Image',
                                       base_path=os.path.join(bpdir, 'static/blog/picture'),
                                       thumbnail_size=(100, 100, True),
+                                      max_size=(720, 480, True),
                                       namegen=prefix_name,
                                       thumbgen=thumb_name)
     }
