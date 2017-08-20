@@ -18,6 +18,7 @@ from jinja2 import Markup
 from flask_security import current_user
 from flask_admin.contrib import fileadmin
 from random import Random
+from datetime import datetime
 
 
 def random_str(randomlength=5):
@@ -75,7 +76,7 @@ class ArticleView(BaseBlogView):
     column_searchable_list = ['title']
     column_filters = ['title', 'create_time', 'state']
 
-    column_editable_list = ['create_time', 'update_time', 'state', 'visit_num', 'tags', 'category']
+    column_editable_list = ['state', 'visit_num', 'tags', 'category']
 
     form_excluded_columns = ['title', 'text']
 
@@ -132,6 +133,8 @@ class ArticleView(BaseBlogView):
                                         Picture.query.order_by('name').filter_by(state=True)]
         article_form.tags.choices = [(tag, tag.name) for tag in Tag.query.order_by('name')]
         article_form.category.choices = [(category, category.name) for category in Category.query.order_by('name')]
+        article_form.create_time.default = datetime.utcnow()
+        article_form.update_time.default = datetime.utcnow()
         return self.render('_create_article.html', article_form=article_form)
 
     @expose('/save_article', methods=["GET", "POST"])
@@ -147,6 +150,8 @@ class ArticleView(BaseBlogView):
         new_article.abstract = article_form.abstract.data
         new_article.tags = article_form.tags.data
         new_article.picture = article_form.picture.data
+        new_article.create_time = article_form.create_time.data
+        new_article.update_time = article_form.update_time.data
 
         if article_form.print_submit.data:
             new_article.state = True
@@ -191,6 +196,8 @@ class ArticleView(BaseBlogView):
         article_form.category.default = the_article.category
         article_form.tags.default = the_article.tags
         article_form.picture.default = the_article.picture
+        article_form.create_time.default = the_article.create_time
+        article_form.update_time.default = the_article.update_time
         article_form.process()
 
         return self.render('_edit_article.html', article_form=article_form, article_id=article_id)
@@ -225,7 +232,6 @@ class ArticleView(BaseBlogView):
                 old_picture.state = True
                 db.session.add(new_picture, old_picture)
 
-
         the_article.title = article_form.title.data
         the_article.tags = article_form.tags.data
         the_article.category = article_form.category.data
@@ -233,6 +239,8 @@ class ArticleView(BaseBlogView):
         the_article.text = article_form.text.data
         the_article.html_text = article_form.html.data
         the_article.abstract = article_form.abstract.data
+        the_article.create_time = article_form.create_time.data
+        the_article.update_time = article_form.update_time.data
         # else确保修改的文章状态是True然后点的保存
         if article_form.print_submit.data:
             the_article.state = True
@@ -283,7 +291,7 @@ class CommentView(BaseBlogView):
 
     column_list = ['id', 'text', 'hidden', 'create_time', 'update_time', 'article', 'user']
 
-    column_editable_list = ['create_time', 'update_time', 'hidden']
+    column_editable_list = ['hidden']
 
     column_formatters = dict(text=macro('render_text'))
 
@@ -312,7 +320,7 @@ class TagView(BaseBlogView):
                                                  filename='blog/picture/' + 'thumb-' + model.picture.path))
     column_formatters = dict(abstract=macro('render_abstract'), picture=_list_thumbnail)
 
-    column_editable_list = ['create_time', 'update_time', 'hidden']
+    column_editable_list = ['hidden']
 
     column_list = ['id', 'name', 'abstract', 'hidden', 'create_time', 'update_time', 'user', 'picture']
 
@@ -344,7 +352,7 @@ class CategoryView(BaseBlogView):
     column_list = ['id', 'name', 'abstract', 'hidden', 'create_time', 'update_time',
                    'articles', 'user', 'picture']
 
-    column_editable_list = ['create_time', 'update_time', 'hidden']
+    column_editable_list = ['hidden']
     column_searchable_list = ['name', 'abstract']
     column_filters = ['name', 'create_time', 'hidden']
     column_labels = {
@@ -385,7 +393,7 @@ def del_image(mapper, connection, target):
 
 class PictureView(BaseBlogView):
     column_list = ['id', 'name', 'state', 'abstract', 'create_time', 'articles', 'location', 'weather', 'user', 'path']
-    column_editable_list = ['create_time', 'state', 'location', 'weather']
+    column_editable_list = ['state', 'location', 'weather']
     column_labels = {
         'id': u'序号',
         'name': u'名字',

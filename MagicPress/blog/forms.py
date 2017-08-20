@@ -32,6 +32,8 @@ class ArticleForm(Form):
     picture = SelectField(u'配图', coerce=_string_to_picture)
     html = TextAreaField("html_text")
     tags = SelectMultipleField(u'标签', coerce=_string_to_tag)
+    create_time = DateTimeField(u'创建时间')
+    update_time = DateTimeField(u'更新时间')
     abstract = TextAreaField(u"文章摘要")
     category = SelectField(u'类别', coerce=_string_to_category)
     print_submit = SubmitField(u"保存")
