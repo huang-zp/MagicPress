@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+
+ {% block body %}
+<div id="main">
+<ul class="list_with_title container">
+{% for flag, time in time_list.iteritems() %}
+  <li class="listing_title">{{ time[0] }}&nbsp;&nbsp;{{ time[1] }}</li>
+  <ul class="listing">
+      {% for article in article_list[flag] %}
+    <li class="listing_item"><span class="date">{{ moment(article.create_time).format("dddd, Do") }}</span>
+        <a href="{{ url_for('blog.article', article_id=article.id) }}"  title="{{ article.title }}" >{{ article.title }}</a>
+    </li>
+      {% endfor %}
+  </ul>
+{% endfor %}
+</ul>
+
+      </div>
+{% endblock %}
+
+
+
+
+

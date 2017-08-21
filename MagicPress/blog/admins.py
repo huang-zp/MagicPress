@@ -184,11 +184,6 @@ class ArticleView(BaseBlogView):
         if the_article.picture and the_article.picture.name != u'暂不选择配图':
             article_form.picture.choices.append((the_article.picture, the_article.picture.name))
 
-        filename = ' '.join(the_article.title.split()) + '.md'
-        try:
-            os.remove(bpdir+'/static/blog/mdfile/'+filename)
-        except:
-            pass
 
         article_form.title.default = the_article.title
         article_form.text.default = the_article.text
@@ -211,6 +206,13 @@ class ArticleView(BaseBlogView):
                                         Picture.query.order_by('name').filter_by(state=True)]
 
         the_article = Article.query.filter_by(id=article_id).first()
+
+        # 删除旧备份
+        old_filename = ' '.join(the_article.title.split()) + '.md'
+        try:
+            os.remove(bpdir+'/static/blog/mdfile/'+old_filename)
+        except:
+            pass
 
         # 有时候直接删除已经关联文章的照片，会造成文章的照片属性为空
         if not the_article.picture:
@@ -250,8 +252,8 @@ class ArticleView(BaseBlogView):
 
         db.session.add(the_article)
         db.session.commit()
-        filename = ' '.join(article_form.title.data.split())+'.md'
-        with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
+        new_filename = ' '.join(article_form.title.data.split())+'.md'
+        with codecs.open(bpdir+'/static/blog/mdfile/'+new_filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
         return redirect('/huangzp/article')
 

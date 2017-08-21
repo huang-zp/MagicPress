@@ -15,10 +15,10 @@
         <div class="post_body">
           <div>
               <div class="p_part">
-                  {% if article.picture and article.picture.path %}
-                  <p><img src="{{ url_for('static', filename='blog/picture/' + article.picture.path) }}" alt=""></p>
-                    <p>{{ article.picture.abstract }}</p>
-                  {% endif %}
+{#                  {% if article.picture and article.picture.path %}#}
+{#                  <p><img src="{{ url_for('static', filename='blog/picture/' + article.picture.path) }}" alt=""></p>#}
+{#                    <p>{{ article.picture.abstract }}</p>#}
+{#                  {% endif %}#}
               </div>
               {% if article.abstract %}
               <div class="p_part">

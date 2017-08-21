@@ -38,10 +38,10 @@ def index():
 @blog.route('/article/<int:article_id>', methods=["GET", "POST"])
 def article(article_id):
 
-    article = Article.query.filter_by(id=article_id).first()
+    the_article = Article.query.filter_by(id=article_id).first()
     next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
     pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
-    return render_template('blog/article.html', article=article, next_article=next_article, pre_article=pre_article)
+    return render_template('blog/article.html', article=the_article, next_article=next_article, pre_article=pre_article)
 
 
 @blog.route('/category', defaults={'id': None})
@@ -53,3 +53,29 @@ def category(id):
     else:
         articles = Category.query.filter_by(id=id).first().articles
         return render_template('blog/category.html', articles=articles)
+
+
+@blog.route('/archive', methods=["GET", "POST"])
+def archive():
+    all_articles = Article.query.order_by(Article.create_time.desc()).all()
+    time_list = {}
+    article_list = [[]]
+    flag = 0
+    time_list[flag] = str(all_articles[0].create_time).split('-', 2)[:2]
+    for the_article in all_articles:
+
+        year_month = str(the_article.create_time).split('-', 2)[:2]
+        if year_month in time_list.values():
+            article_list[flag].append(the_article)
+        else:
+            flag += 1
+            time_list[flag] = year_month
+            article_list.append([])
+            article_list[flag].append(the_article)
+    print time_list
+    return render_template('blog/archive.html', time_list=time_list, article_list=article_list)
+
+
+
+
+
