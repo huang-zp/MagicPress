@@ -26,6 +26,7 @@ from flask import current_app
 
 
 @blog.route('/change_theme/<string:theme>')
+@login_required
 def change_theme(theme):
     current_app.config['THEME'] = theme
     return redirect('/')
