@@ -29,6 +29,7 @@ class Config:
     SECURITY_POST_LOGIN_VIEW = "/huangzp/"
     SECURITY_POST_LOGOUT_VIEW = "/huangzp/"
     SECURITY_POST_REGISTER_VIEW = "/huangzp/"
+    THEME = "blog"
 
     @staticmethod
     def init_app(app):

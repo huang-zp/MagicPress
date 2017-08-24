@@ -1,7 +1,7 @@
 # coding:utf-8
 import json
 import os
-from flask import redirect
+from flask import redirect, url_for
 
 from flask import render_template, request
 from config import bpdir
@@ -10,6 +10,7 @@ from MagicPress.blog import blog
 from .models import Article, Category
 from MagicPress import db
 from flask_security import login_required
+from flask import current_app
 
 # @blog.route('/file', methods=["POST"])
 # def file():
@@ -24,24 +25,34 @@ from flask_security import login_required
 #     return json.dumps(data)
 
 
+@blog.route('/change_theme/<string:theme>')
+def change_theme(theme):
+    current_app.config['THEME'] = theme
+    return redirect('/')
+
+
+
 @blog.route('/', methods=["GET", "POST"])
 def index():
 
+    print current_app.config['THEME']
     page = request.args.get('page', 1, type=int)
     pagination = Article.query.order_by(Article.create_time.desc()).filter_by(state=True).paginate(
         page, per_page=3, error_out=False
     )
     articles = pagination.items
-    return render_template('blog/index.html', articles=articles, pagination=pagination)
+    categories = Category.query.all()
+    return render_template(current_app.config['THEME'] + '/index.html', articles=articles, pagination=pagination,
+                           categories=categories)
 
 
 @blog.route('/article/<int:article_id>', methods=["GET", "POST"])
 def article(article_id):
-
+    a = request
     the_article = Article.query.filter_by(id=article_id).first()
     next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
     pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
-    return render_template('blog/article.html', article=the_article, next_article=next_article, pre_article=pre_article)
+    return render_template(current_app.config['THEME'] + '/article.html', article=the_article, next_article=next_article, pre_article=pre_article)
 
 
 @blog.route('/category', defaults={'id': None})
@@ -49,10 +60,10 @@ def article(article_id):
 def category(id):
     if not id:
         categories = Category.query.all()
-        return render_template('blog/categories.html', categories=categories)
+        return render_template(current_app.config['THEME'] + '/categories.html', categories=categories)
     else:
         articles = Category.query.filter_by(id=id).first().articles
-        return render_template('blog/category.html', articles=articles)
+        return render_template(current_app.config['THEME'] + '/category.html', articles=articles)
 
 
 @blog.route('/archive', methods=["GET", "POST"])
@@ -73,7 +84,7 @@ def archive():
             article_list.append([])
             article_list[flag].append(the_article)
     print time_list
-    return render_template('blog/archive.html', time_list=time_list, article_list=article_list)
+    return render_template(current_app.config['THEME'] + '/archive.html', time_list=time_list, article_list=article_list)
 
 
 

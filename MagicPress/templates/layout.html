@@ -22,7 +22,7 @@
 
 
        {% block access_control %}
-<div class="navbar-text btn-group pull-right">
+           <div class="navbar-text btn-group pull-right">
     {% if current_user.is_authenticated %}
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <i class="glyphicon glyphicon-user"></i>
@@ -33,6 +33,18 @@
         </ul>
     {% else %}
         <a href="{{ url_for('security.login') }}"><span class="glyphicon glyphicon-log-in"></span> Log in</a>
+    {% endif %}
+</div>
+<div class="navbar-text btn-group pull-right">
+    {% if current_user.is_authenticated %}
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <i class="glyphicon glyphicon-eye-open"></i>
+            theme
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{{ url_for('blog.change_theme', theme='simple_blog') }}"> Simple</a></li>
+            <li><a href="{{ url_for('blog.change_theme', theme='blog') }}"> Steady</a></li>
+        </ul>
     {% endif %}
 </div>
 {% endblock %}

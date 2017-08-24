@@ -1,0 +1,20 @@
+{% extends "simple_blog/base.html" %}
+
+
+
+ {% block body %}
+<div id="layout">
+<div id="category_posts">
+<h1>{{ articles[0].category }}</h1>
+<ul>
+ {% for article in articles %}
+    <li><a href="{{ url_for('blog.article', article_id=article.id) }}" >{{ article.title }}</a>
+      <div class="date">{{ moment(article.create_time).format('LLLL') }}</div>
+    </li>
+{% endfor %}
+</ul>
+</div>
+
+
+</div>
+{% endblock %}

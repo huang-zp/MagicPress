@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% block head %}
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="renderer" content="webkit">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="城里 夜如海洋">
+    <meta property="og:url" content="www.huangzp.com">
+    <meta property="og:site_name" content="I AM HUANGZP">
+    <meta property="og:description" content="在苦心之后 看潮汐的永恒">
+    <meta property="og:keywords" content="python,data analysis,Flask,machine learning,huangzp,magicroc">
+    <title>城里 夜如海洋</title>
+    <link href="{{ url_for('static', filename='blog/css/favicon.ico') }}" rel="shortcut icon" type="image/x-icon" >
+    <link href="{{ url_for('static', filename='simple_blog/style.css') }}" rel="stylesheet">
+
+{% endblock %}
+</head>
+{% block information %}
+    <div id="header">
+      <div id="nav_wrap">
+        <ul id="nav">
+          <li><a href="{{ url_for('.index') }}">Home</a>
+          </li>
+          <li><a href="{{ url_for('.archive') }}">Archive</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+{% endblock %}
+
+
+ <body>
+ {% block body %}
+
+ {% endblock %}
+</body>
+
+{% block footer %}
+    <div id="footer"><a href="https://github.com/huang-zp/MagicPress" target="_blank">Powered By MagicPress</a> <a  href="https://github.com/huang-zp">Copyright © huangzp 2017</a>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+{% endblock %}
+</html>

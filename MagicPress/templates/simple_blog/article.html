@@ -1,0 +1,39 @@
+{% extends "simple_blog/base.html" %}
+
+ {% block body %}
+<div id="layout">
+
+
+  <div class="post">
+    <h1 class="title">{{ article.title }}
+    </h1>
+
+    <div class="content">
+        <div class="post_content">
+        {{ article.html_text | safe }}
+        </div>
+              <div class="info">
+      <div class="date">{{ moment(article.create_time).format('LLLL') }}</div>
+    </div>
+    </div>
+
+
+
+
+
+
+<div class="clear"></div>
+<div class="pager">
+
+{% if pre_article %}
+          <a href="{{ url_for('blog.article', article_id=pre_article.id) }}" class="round pre">&lt; {{ pre_article.title }}</a>
+          {% endif %}
+          {% if next_article %}
+          <a href="{{ url_for('blog.article', article_id=next_article.id) }}" class="round next">{{ next_article.title }} &gt;</a>
+          {% endif %}
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "simple_blog/base.html" %}
+ {% block body %}
+    <div id="layout">
+
+<div class="new_post">
+    {% for article in articles %}
+  <h3><a href="{{ url_for('blog.article', article_id=article.id) }}">{{ article.title }}</a></h3>
+
+    <a href="{{ url_for('blog.article', article_id=article.id) }}" class="summary">
+    <div class="content">
+{{ article.abstract }}
+</div></a>
+        <br>
+    {% endfor %}
+<div class="clear"></div>
+<div class="pager">
+    {% if pagination.has_prev %}
+    <h2><a href="{{ url_for('.index', page = pagination.page - 1) }}"  class="round pre">Pre</a></h2>
+    {% endif %}
+    {% if pagination.has_next %}
+    <h2><a href="{{ url_for('.index', page = pagination.page + 1) }}"  class="round next">Next</a></h2>
+    {% endif %}
+</div>
+</div>
+
+
+<ul id="categories" class="categories">
+    {% for category in categories %}
+  <li><a href="{{ url_for('.category', id=category.id) }}">
+      <h3>{{ category.name }}</h3><span>{{ category.articles |length }} posts</span></a>
+  </li>
+    {% endfor %}
+</ul>
+
+
+
+    </div>
+ {% endblock %}
+
