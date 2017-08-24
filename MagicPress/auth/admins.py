@@ -4,7 +4,7 @@ from MagicPress.blog.admins import BaseBlogView
 from flask_security import current_user
 from flask import abort, redirect, request, url_for
 from flask_admin import BaseView, expose
-
+from MagicPress import cache
 
 class UserView(BaseBlogView):
 
@@ -43,4 +43,5 @@ class RoleView(BaseBlogView):
 class BackView(BaseView):
     @expose('/')
     def index(self):
+        cache.clear()
         return redirect(url_for('blog.index'))

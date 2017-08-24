@@ -2,7 +2,7 @@
 # __author__ = 'huangzp'
 import os
 from flask import Flask, url_for
-from MagicPress.extensions import db, bootstrap, migrate, moment
+from MagicPress.extensions import db, bootstrap, migrate, moment, cache
 from flask_admin import Admin, helpers
 from flask_admin.contrib import fileadmin
 from flask_admin.contrib.sqla import ModelView
@@ -29,6 +29,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     moment.init_app(app)
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     admin = Admin(app, u'夜如海洋', base_template='layout.html', template_mode='bootstrap3', index_view=
                   AdminIndexView(
                       name=u'城里 夜如海洋',

@@ -8,10 +8,10 @@ from config import bpdir
 
 from MagicPress.blog import blog
 from .models import Article, Category
-from MagicPress import db
+from MagicPress import db, cache
 from flask_security import login_required
 from flask import current_app
-
+from MagicPress.utils.cache import cached
 # @blog.route('/file', methods=["POST"])
 # def file():
 #     imagefile = request.files['editormd-image-file']
@@ -34,6 +34,7 @@ def change_theme(theme):
 
 
 @blog.route('/', methods=["GET", "POST"])
+@cached(timeout=5 * 60, key='blog_view_%s')
 def index():
 
     print current_app.config['THEME']
@@ -48,6 +49,7 @@ def index():
 
 
 @blog.route('/article/<int:article_id>', methods=["GET", "POST"])
+@cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
 def article(article_id):
     a = request
     the_article = Article.query.filter_by(id=article_id).first()
@@ -58,6 +60,7 @@ def article(article_id):
 
 @blog.route('/category', defaults={'id': None})
 @blog.route('/category/<id>', methods=["GET", "POST"])
+@cache.cached(timeout=300, key_prefix='bview_%s', unless=None)
 def category(id):
     if not id:
         categories = Category.query.all()
@@ -68,6 +71,7 @@ def category(id):
 
 
 @blog.route('/archive', methods=["GET", "POST"])
+@cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
 def archive():
     all_articles = Article.query.order_by(Article.create_time.desc()).all()
     time_list = {}
