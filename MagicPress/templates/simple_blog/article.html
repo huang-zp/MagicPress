@@ -41,11 +41,12 @@
 
   <form id="fb_new_comment" method="post" action="{{ url_for('blog.article', article_id=article.id) }}">
       {{ comment_form.hidden_tag() }}
-      {{ render_field(comment_form.text) }}
+      <div style=" font:bold 14px 宋体;color:#F00" id="error_msg"></div>
+      {{ render_field(comment_form.text, id='text') }}
     <div class="input_body">
       <ul>
-          {{ render_field_label(comment_form.name) }}
-            {{ render_field_label(comment_form.email) }}
+          {{ render_field_label(comment_form.name, id='name') }}
+            {{ render_field_label(comment_form.email, id='email') }}
           {{ render_field_label(comment_form.site) }}
           <li>
           {{ render_field(comment_form.comment, class="c_button") }}
@@ -59,5 +60,42 @@
 
 
 </div>
+<script src="{{ url_for('static', filename='simple_blog/validator.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+  var validator = new Validator('fb_new_comment',[
+    {
+        name: 'text',
+        display:"评论呢？？？",
+        rules: 'required'
+    },{
+        name: 'name',
+        display:"姓名呢？？？",
+        rules: 'required'
+    },{
+        name: 'email',
+        display:"邮箱呢？？？|邮箱合法么？？？",
+        rules: 'required|is_email'
+        // rules: 'valid_email|required|max_length(12)|min_length(2)'
+    }
 
+
+  ],function(obj,evt){
+      if(obj.errors){
+
+
+var errors_elm = document.getElementById('error_msg');
+    errors_elm.style.display = 'none';
+    if(obj.errors.length>0){
+        var error_str = '';
+        for (var i = 0; i < obj.errors.length; i++) {
+            error_str += i+1 + ':' + obj.errors[i].message + '；<br/>';
+        }
+        errors_elm.style.display = "block";
+        errors_elm.innerHTML = error_str;
+    }
+    console.log(validator);
+      }
+
+  })
+</script>
 {% endblock %}
