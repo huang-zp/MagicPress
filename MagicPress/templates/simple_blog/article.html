@@ -1,4 +1,5 @@
 {% extends "simple_blog/base.html" %}
+{% from "macros.html" import render_field, render_field_label %}
 
  {% block body %}
 <div id="layout">
@@ -19,9 +20,6 @@
 
 
 
-
-
-
 <div class="clear"></div>
 <div class="pager">
 
@@ -31,9 +29,35 @@
           {% if next_article %}
           <a href="{{ url_for('blog.article', article_id=next_article.id) }}" class="round next">{{ next_article.title }} &gt;</a>
           {% endif %}
+</div>
+ </div>
+<hr>
+   <div id="fb_comments_container">
+    <link href="{{ url_for('static', filename='simple_blog/comment.css') }}" rel="stylesheet">
+  <ul id="fb_comments">
+
+  </ul>
+
+
+  <form id="fb_new_comment" method="post" action="{{ url_for('blog.article', article_id=article.id) }}">
+      {{ comment_form.hidden_tag() }}
+      {{ render_field(comment_form.text) }}
+    <div class="input_body">
+      <ul>
+          {{ render_field_label(comment_form.name) }}
+            {{ render_field_label(comment_form.email) }}
+          {{ render_field_label(comment_form.site) }}
+          <li>
+          {{ render_field(comment_form.comment, class="c_button") }}
+          </li>
+      </ul>
+    </div>
+  </form>
+
 
 </div>
 
 
+</div>
 
 {% endblock %}

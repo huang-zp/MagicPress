@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="data.sqlite">
+  <database-model serializer="dbm" rdbms="SQLITE" format-version="4.2">
+    <root id="1"/>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <table id="3" parent="2" name="alembic_version"/>
+    <table id="4" parent="2" name="articles"/>
+    <table id="5" parent="2" name="articles_tags"/>
+    <table id="6" parent="2" name="categories"/>
+    <table id="7" parent="2" name="comments"/>
+    <table id="8" parent="2" name="pictures"/>
+    <table id="9" parent="2" name="roles"/>
+    <table id="10" parent="2" name="roles_users"/>
+    <table id="11" parent="2" name="sqlite_master"/>
+    <table id="12" parent="2" name="tags"/>
+    <table id="13" parent="2" name="users"/>
+    <column id="14" parent="3" name="version_num">
+      <DataType>VARCHAR(32)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="15" parent="3" name="sqlite_autoindex_alembic_version_1">
+      <ColNames>version_num</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="16" parent="3" name="alembic_version_pkc">
+      <ColNames>version_num</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_alembic_version_1</UnderlyingIndexName>
+    </key>
+    <column id="17" parent="4" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="18" parent="4" name="picture_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="19" parent="4" name="abstract">
+      <Position>2</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="20" parent="4" name="title">
+      <Position>3</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="21" parent="4" name="text">
+      <Position>4</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="22" parent="4" name="html_text">
+      <Position>5</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="23" parent="4" name="create_time">
+      <Position>6</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="24" parent="4" name="update_time">
+      <Position>7</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="25" parent="4" name="state">
+      <Position>8</Position>
+      <DataType>BOOLEAN|0</DataType>
+    </column>
+    <column id="26" parent="4" name="visit_num">
+      <Position>9</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="27" parent="4" name="category_id">
+      <Position>10</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="28" parent="4" name="user_id">
+      <Position>11</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <index id="29" parent="4" name="ix_articles_title">
+      <ColNames>title</ColNames>
+    </index>
+    <index id="30" parent="4" name="ix_articles_create_time">
+      <ColNames>create_time</ColNames>
+    </index>
+    <index id="31" parent="4" name="ix_articles_update_time">
+      <ColNames>update_time</ColNames>
+    </index>
+    <index id="32" parent="4" name="ix_articles_visit_num">
+      <ColNames>visit_num</ColNames>
+    </index>
+    <key id="33" parent="4">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="34" parent="4">
+      <ColNames>picture_id</ColNames>
+      <RefTableName>pictures</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="35" parent="4">
+      <ColNames>category_id</ColNames>
+      <RefTableName>categories</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="36" parent="4">
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <check id="37" parent="4">
+      <Predicate>state IN (0, 1)</Predicate>
+    </check>
+    <column id="38" parent="5" name="article_id">
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="39" parent="5" name="tag_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <foreign-key id="40" parent="5">
+      <ColNames>article_id</ColNames>
+      <RefTableName>articles</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="41" parent="5">
+      <ColNames>tag_id</ColNames>
+      <RefTableName>tags</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="42" parent="6" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="43" parent="6" name="picture_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="44" parent="6" name="abstract">
+      <Position>2</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="45" parent="6" name="name">
+      <Position>3</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="46" parent="6" name="hidden">
+      <Position>4</Position>
+      <DataType>BOOLEAN|0</DataType>
+    </column>
+    <column id="47" parent="6" name="create_time">
+      <Position>5</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="48" parent="6" name="update_time">
+      <Position>6</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="49" parent="6" name="user_id">
+      <Position>7</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <index id="50" parent="6" name="ix_categories_name">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="51" parent="6" name="ix_categories_create_time">
+      <ColNames>create_time</ColNames>
+    </index>
+    <index id="52" parent="6" name="ix_categories_update_time">
+      <ColNames>update_time</ColNames>
+    </index>
+    <key id="53" parent="6">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="54" parent="6">
+      <ColNames>picture_id</ColNames>
+      <RefTableName>pictures</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="55" parent="6">
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <check id="56" parent="6">
+      <Predicate>hidden IN (0, 1)</Predicate>
+    </check>
+    <column id="57" parent="7" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="58" parent="7" name="text">
+      <Position>1</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="59" parent="7" name="hidden">
+      <Position>2</Position>
+      <DataType>BOOLEAN|0</DataType>
+    </column>
+    <column id="60" parent="7" name="create_time">
+      <Position>3</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="61" parent="7" name="update_time">
+      <Position>4</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="62" parent="7" name="user_id">
+      <Position>5</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="63" parent="7" name="article_id">
+      <Position>6</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="64" parent="7" name="browser">
+      <Position>7</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="65" parent="7" name="ip">
+      <Position>8</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="66" parent="7" name="language">
+      <Position>9</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="67" parent="7" name="location">
+      <Position>10</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="68" parent="7" name="network">
+      <Position>11</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="69" parent="7" name="os">
+      <Position>12</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <index id="70" parent="7" name="ix_comments_create_time">
+      <ColNames>create_time</ColNames>
+    </index>
+    <index id="71" parent="7" name="ix_comments_update_time">
+      <ColNames>update_time</ColNames>
+    </index>
+    <key id="72" parent="7">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="73" parent="7">
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="74" parent="7">
+      <ColNames>article_id</ColNames>
+      <RefTableName>articles</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <check id="75" parent="7">
+      <Predicate>hidden IN (0, 1)</Predicate>
+    </check>
+    <column id="76" parent="8" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="77" parent="8" name="name">
+      <Position>1</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="78" parent="8" name="abstract">
+      <Position>2</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="79" parent="8" name="location">
+      <Position>3</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="80" parent="8" name="create_time">
+      <Position>4</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="81" parent="8" name="user_id">
+      <Position>5</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="82" parent="8" name="weather">
+      <Position>6</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="83" parent="8" name="path">
+      <Position>7</Position>
+      <DataType>VARCHAR(128)|0</DataType>
+    </column>
+    <column id="84" parent="8" name="state">
+      <Position>8</Position>
+      <DataType>BOOLEAN|0</DataType>
+    </column>
+    <index id="85" parent="8" name="ix_pictures_create_time">
+      <ColNames>create_time</ColNames>
+    </index>
+    <key id="86" parent="8">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="87" parent="8">
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <check id="88" parent="8">
+      <Predicate>state IN (0, 1)</Predicate>
+    </check>
+    <column id="89" parent="9" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="90" parent="9" name="name">
+      <Position>1</Position>
+      <DataType>VARCHAR(80)|0</DataType>
+    </column>
+    <column id="91" parent="9" name="description">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|0</DataType>
+    </column>
+    <index id="92" parent="9" name="sqlite_autoindex_roles_1">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="93" parent="9">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="94" parent="9">
+      <ColNames>name</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_roles_1</UnderlyingIndexName>
+    </key>
+    <column id="95" parent="10" name="user_id">
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="96" parent="10" name="role_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <foreign-key id="97" parent="10">
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="98" parent="10">
+      <ColNames>role_id</ColNames>
+      <RefTableName>roles</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="99" parent="11" name="type">
+      <DataType>text|0</DataType>
+    </column>
+    <column id="100" parent="11" name="name">
+      <Position>1</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="101" parent="11" name="tbl_name">
+      <Position>2</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="102" parent="11" name="rootpage">
+      <Position>3</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="103" parent="11" name="sql">
+      <Position>4</Position>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="104" parent="12" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="105" parent="12" name="picture_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="106" parent="12" name="abstract">
+      <Position>2</Position>
+      <DataType>TEXT|0</DataType>
+    </column>
+    <column id="107" parent="12" name="name">
+      <Position>3</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="108" parent="12" name="hidden">
+      <Position>4</Position>
+      <DataType>BOOLEAN|0</DataType>
+    </column>
+    <column id="109" parent="12" name="create_time">
+      <Position>5</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="110" parent="12" name="update_time">
+      <Position>6</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="111" parent="12" name="user_id">
+      <Position>7</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <index id="112" parent="12" name="ix_tags_name">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="113" parent="12" name="ix_tags_create_time">
+      <ColNames>create_time</ColNames>
+    </index>
+    <index id="114" parent="12" name="ix_tags_update_time">
+      <ColNames>update_time</ColNames>
+    </index>
+    <key id="115" parent="12">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="116" parent="12">
+      <ColNames>picture_id</ColNames>
+      <RefTableName>pictures</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="117" parent="12">
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <check id="118" parent="12">
+      <Predicate>hidden IN (0, 1)</Predicate>
+    </check>
+    <column id="119" parent="13" name="id">
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="120" parent="13" name="name">
+      <Position>1</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="121" parent="13" name="location">
+      <Position>2</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="122" parent="13" name="profession">
+      <Position>3</Position>
+      <DataType>VARCHAR(64)|0</DataType>
+    </column>
+    <column id="123" parent="13" name="email">
+      <Position>4</Position>
+      <DataType>VARCHAR(255)|0</DataType>
+    </column>
+    <column id="124" parent="13" name="password">
+      <Position>5</Position>
+      <DataType>VARCHAR(255)|0</DataType>
+    </column>
+    <column id="125" parent="13" name="last_login_at">
+      <Position>6</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="126" parent="13" name="current_login_at">
+      <Position>7</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <column id="127" parent="13" name="last_login_ip">
+      <Position>8</Position>
+      <DataType>VARCHAR(128)|0</DataType>
+    </column>
+    <column id="128" parent="13" name="current_login_ip">
+      <Position>9</Position>
+      <DataType>VARCHAR(128)|0</DataType>
+    </column>
+    <column id="129" parent="13" name="login_count">
+      <Position>10</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="130" parent="13" name="active">
+      <Position>11</Position>
+      <DataType>BOOLEAN|0</DataType>
+    </column>
+    <column id="131" parent="13" name="confirmed_at">
+      <Position>12</Position>
+      <DataType>DATETIME|0</DataType>
+    </column>
+    <index id="132" parent="13" name="ix_users_name">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="133" parent="13" name="sqlite_autoindex_users_1">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="134" parent="13">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="135" parent="13">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_users_1</UnderlyingIndexName>
+    </key>
+    <check id="136" parent="13">
+      <Predicate>active IN (0, 1)</Predicate>
+    </check>
+  </database-model>
+</dataSource>

@@ -8,3 +8,38 @@
 
     </div>
 {% endmacro %}
+
+{% macro render_errors(field) %}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+{% endmacro %}
+
+{% macro render_field_label(field) %}
+        <li>
+          <label>{{ field.label }}:</label>
+          {{ field(**kwargs)|safe }}
+        </li>
+  {% if field.errors %}
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+
+{% macro render_field(field) %}
+  {{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+

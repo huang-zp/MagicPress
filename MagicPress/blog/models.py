@@ -100,6 +100,12 @@ class Comment(db.Model):
     update_time = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    ip = db.Column(db.Integer)
+    location = db.Column(db.String(64))
+    network = db.Column(db.String(64))
+    browser = db.Column(db.String(64))
+    os = db.Column(db.String(64))
+    language = db.Column(db.String(64))
 
     def __repr__(self):
         return self.text

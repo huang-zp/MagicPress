@@ -8,6 +8,7 @@ from config import bpdir
 
 from MagicPress.blog import blog
 from .models import Article, Category
+from .forms import CommentForm
 from MagicPress import db, cache
 from flask_security import login_required
 from flask import current_app
@@ -49,24 +50,27 @@ def index():
 
 
 @blog.route('/article/<int:article_id>', methods=["GET", "POST"])
-@cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
+@cached()
 def article(article_id):
-    a = request
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        pass
     the_article = Article.query.filter_by(id=article_id).first()
     next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
     pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
-    return render_template(current_app.config['THEME'] + '/article.html', article=the_article, next_article=next_article, pre_article=pre_article)
+    return render_template(current_app.config['THEME'] + '/article.html', article=the_article, next_article=next_article,
+                           pre_article=pre_article, comment_form=comment_form)
 
 
-@blog.route('/category', defaults={'id': None})
-@blog.route('/category/<id>', methods=["GET", "POST"])
-@cache.cached(timeout=300, key_prefix='bview_%s', unless=None)
-def category(id):
-    if not id:
+@blog.route('/category', defaults={'article_id': None})
+@blog.route('/category/<int:article_id>', methods=["GET", "POST"])
+@cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
+def category(article_id):
+    if not article_id:
         categories = Category.query.all()
         return render_template(current_app.config['THEME'] + '/categories.html', categories=categories)
     else:
-        articles = Category.query.filter_by(id=id).first().articles
+        articles = Category.query.filter_by(id=article_id).first().articles
         return render_template(current_app.config['THEME'] + '/category.html', articles=articles)
 
 
@@ -92,6 +96,12 @@ def archive():
     return render_template(current_app.config['THEME'] + '/archive.html', time_list=time_list, article_list=article_list)
 
 
-
-
-
+@blog.route('/comment/<int:article_id>', methods=['GET', 'POST'])
+def comment(article_id):
+    comment_form = CommentForm(request.form)
+    cache_key = 'view_%s' % url_for('blog.article', article_id=article_id)
+    cache.delete(cache_key)
+    cache.clear()
+    if comment_form.validate_on_submit():
+        pass
+    return redirect(url_for('blog.article', article_id=article_id))

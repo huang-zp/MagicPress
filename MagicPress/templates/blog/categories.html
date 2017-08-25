@@ -5,7 +5,7 @@
 
 <ul id="categories" class="categories">
     {% for category in categories %}
-  <li><a href="{{ url_for('.category', id=category.id) }}">
+  <li><a href="{{ url_for('.category', article_id=category.id) }}">
       <h3>{{ category.name }}</h3><span>{{ category.articles |length }} posts</span></a>
   </li>
     {% endfor %}
