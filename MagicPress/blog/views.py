@@ -11,7 +11,7 @@ from .models import Article, Category
 from MagicPress import db, cache
 from flask_security import login_required
 from flask import current_app
-from MagicPress.utils.cache import cached
+from MagicPress.utils.cache import cached, key_prefix
 # @blog.route('/file', methods=["POST"])
 # def file():
 #     imagefile = request.files['editormd-image-file']
@@ -32,9 +32,9 @@ def change_theme(theme):
     return redirect('/')
 
 
-
 @blog.route('/', methods=["GET", "POST"])
-@cached(timeout=5 * 60, key='blog_view_%s')
+# @cached(timeout=5 * 60, key='blog_view_%s')
+@cache.cached(timeout=300, key_prefix=key_prefix, unless=None)
 def index():
 
     print current_app.config['THEME']

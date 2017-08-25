@@ -2,6 +2,7 @@ from flask import request
 from functools import wraps
 from MagicPress import cache
 
+
 def cached(timeout=5 * 60, key='view_%s'):
     def decorator(f):
         @wraps(f)
@@ -14,3 +15,8 @@ def cached(timeout=5 * 60, key='view_%s'):
             return value
         return decorated_function
     return decorator
+
+
+def key_prefix():
+    cache_key = 'view_%s' % request.full_path
+    return cache_key
