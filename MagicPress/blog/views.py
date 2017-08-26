@@ -2,12 +2,11 @@
 import json
 import os
 from flask import redirect, url_for
-
 from flask import render_template, request
 from config import bpdir
-
+from datetime import datetime
 from MagicPress.blog import blog
-from .models import Article, Category
+from .models import Article, Category, Comment
 from .forms import CommentForm
 from MagicPress import db, cache
 from flask_security import login_required
@@ -54,7 +53,17 @@ def index():
 def article(article_id):
     comment_form = CommentForm()
     if comment_form.validate_on_submit():
-        pass
+        new_comment = Comment(text=comment_form.text.data, username=comment_form.name.data)
+        new_comment.create_time = datetime.utcnow()
+        new_comment.site = comment_form.site.data
+        new_comment.email = comment_form.email.data
+        new_comment.ip = request.remote_addr
+        new_comment.language = request.accept_languages.best
+        new_comment.os = request.user_agent.platform
+        new_comment.browser = request.user_agent.browser
+        new_comment.article_id = str(request.base_url).split('/')[-1]
+        db.session.add(new_comment)
+        db.session.commit()
     the_article = Article.query.filter_by(id=article_id).first()
     next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
     pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()

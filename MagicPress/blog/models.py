@@ -33,7 +33,6 @@ class Picture(db.Model):
     tags = db.relationship('Tag', backref='picture')
     categories = db.relationship('Category', backref='picture')
 
-
     def __repr__(self):
         return self.name
 
@@ -101,11 +100,14 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     ip = db.Column(db.Integer)
+    site = db.Column(db.String(64))
     location = db.Column(db.String(64))
     network = db.Column(db.String(64))
     browser = db.Column(db.String(64))
     os = db.Column(db.String(64))
     language = db.Column(db.String(64))
+    username = db.Column(db.String(64))  # 非用户
+    email = db.Column(db.String(64))
 
     def __repr__(self):
         return self.text

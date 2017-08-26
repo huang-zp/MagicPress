@@ -291,12 +291,11 @@ class ArticleView(BaseBlogView):
 
 class CommentView(BaseBlogView):
 
-    column_list = ['id', 'text', 'hidden', 'create_time', 'update_time', 'article', 'user']
+    column_list = ['id', 'text', 'hidden', 'create_time', 'article', 'username', 'email', 'site', 'ip', 'location', 'os'
+                   , 'browser', 'language', 'network']
 
     column_editable_list = ['hidden']
-
     column_formatters = dict(text=macro('render_text'))
-
     column_searchable_list = ['text']
     column_filters = ['text', 'create_time', 'hidden']
     column_labels = {
@@ -304,9 +303,16 @@ class CommentView(BaseBlogView):
         'text': u'评论',
         'hidden': u'状态',
         'create_time': u'创建时间',
-        'update_time': u'更新时间',
         'article': u'文章',
-        'user': u'作者'
+        'username': u'姓名',
+        'email': u'邮箱',
+        'site': u'站点',
+        'ip': u'Ip',
+        'location': u'IP地点',
+        'os': u'平台',
+        'browser': u'浏览器',
+        'language': u'语言',
+        'network': u'网络接入商'
     }
 
     def __init__(self, session, **kwargs):
