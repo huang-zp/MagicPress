@@ -24,10 +24,15 @@
     <div id="header">
       <div id="nav_wrap">
         <ul id="nav">
+
           <li><a href="{{ url_for('.index') }}">Home</a>
           </li>
           <li><a href="{{ url_for('.archive') }}">Archive</a>
           </li>
+          {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('admin.index') }}">Data</a>
+          </li>
+            {% endif %}
         </ul>
       </div>
     </div>

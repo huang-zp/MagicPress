@@ -65,6 +65,10 @@ The code is hosted on <a href="https://github.com/huang-zp/MagicPress" target="_
           </li>
           <li><a href="#">Album</a>
           </li>
+                   {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('admin.index') }}">Data</a>
+          </li>
+            {% endif %}
         </ul>
           <div class="powered_by"><a href="https://github.com/huang-zp/MagicPress" target="_blank">Powered By MagicPress</a> <a  href="https://github.com/huang-zp">Copyright © huangzp 2017</a>
         </div>

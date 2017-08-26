@@ -27,10 +27,19 @@ from MagicPress.utils.filter import gfw
 #     return json.dumps(data)
 
 
+@cache.cached(key_prefix='get_theme')
+def get_theme():
+    with open(bpdir+'/static/theme', 'r') as f:
+       theme = f.read()
+    return theme
+
+
 @blog.route('/change_theme/<string:theme>')
 @login_required
 def change_theme(theme):
-    current_app.config['THEME'] = theme
+    cache.clear()
+    with open(bpdir+'/static/theme', 'w') as f:
+        f.write(theme)
     return redirect('/')
 
 
@@ -39,14 +48,14 @@ def change_theme(theme):
 @cache.cached(timeout=300, key_prefix=key_prefix, unless=None)
 def index():
 
-    print current_app.config['THEME']
+    print get_theme()
     page = request.args.get('page', 1, type=int)
     pagination = Article.query.order_by(Article.create_time.desc()).filter_by(state=True).paginate(
         page, per_page=3, error_out=False
     )
     articles = pagination.items
     categories = Category.query.all()
-    return render_template(current_app.config['THEME'] + '/index.html', articles=articles, pagination=pagination,
+    return render_template(get_theme() + '/index.html', articles=articles, pagination=pagination,
                            categories=categories)
 
 
@@ -79,7 +88,7 @@ def article(article_id):
     next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
     pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
     comments = Comment.query.filter_by(article_id=article_id, hidden=True).all()
-    return render_template(current_app.config['THEME'] + '/article.html', article=the_article, next_article=next_article,
+    return render_template(get_theme() + '/article.html', article=the_article, next_article=next_article,
                            pre_article=pre_article, comment_form=comment_form, comments=comments)
 
 
@@ -89,10 +98,10 @@ def article(article_id):
 def category(article_id):
     if not article_id:
         categories = Category.query.all()
-        return render_template(current_app.config['THEME'] + '/categories.html', categories=categories)
+        return render_template(get_theme() + '/categories.html', categories=categories)
     else:
         articles = Category.query.filter_by(id=article_id).first().articles
-        return render_template(current_app.config['THEME'] + '/category.html', articles=articles)
+        return render_template(get_theme() + '/category.html', articles=articles)
 
 
 @blog.route('/archive', methods=["GET", "POST"])
@@ -114,7 +123,7 @@ def archive():
             article_list.append([])
             article_list[flag].append(the_article)
     print time_list
-    return render_template(current_app.config['THEME'] + '/archive.html', time_list=time_list, article_list=article_list)
+    return render_template(get_theme() + '/archive.html', time_list=time_list, article_list=article_list)
 
 
 @blog.route('/comment/<int:article_id>', methods=['GET', 'POST'])
