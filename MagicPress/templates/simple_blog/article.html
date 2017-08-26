@@ -3,8 +3,11 @@
 
  {% block body %}
 <div id="layout">
-
-
+<div style=" font:bold 20px 宋体;color:#F00">
+    {% for message in get_flashed_messages() %}
+    {{ message }}
+    {% endfor %}
+</div>
   <div class="post">
     <h1 class="title">{{ article.title }}
     </h1>
@@ -14,7 +17,7 @@
         {{ article.html_text | safe }}
         </div>
               <div class="info">
-      <div class="date">{{ moment(article.create_time).format('LLLL') }}</div>
+      <div class="date">{{ moment(article.create_time).format('dddd YYYY-MM-DD HH:mm') }}</div>
     </div>
     </div>
 
@@ -35,10 +38,19 @@
    <div id="fb_comments_container">
     <link href="{{ url_for('static', filename='simple_blog/comment.css') }}" rel="stylesheet">
   <ul id="fb_comments">
-
+      {% for comment in comments %}
+        <li class="comment">
+      <div class="avatar"><img src="/static/user.png"/>
+      </div>
+      <div class="c_content comment_body">
+        <div class="author"><a href="#"><b>{{ comment.username }}</b></a><small>{{ moment(comment.create_time).format('YYYY-MM-DD HH:mm') }}</small>
+        </div>
+        <div class="comment_content"><p>{{ comment.text }}</p>
+</div>
+      </div>
+    </li>
+      {% endfor %}
   </ul>
-
-
   <form id="fb_new_comment" method="post" action="{{ url_for('blog.article', article_id=article.id) }}">
       {{ comment_form.hidden_tag() }}
       <div style=" font:bold 14px 宋体;color:#F00" id="error_msg"></div>

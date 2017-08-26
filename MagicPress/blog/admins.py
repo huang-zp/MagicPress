@@ -295,7 +295,7 @@ class CommentView(BaseBlogView):
                    , 'browser', 'language', 'network']
 
     column_editable_list = ['hidden']
-    column_formatters = dict(text=macro('render_text'))
+
     column_searchable_list = ['text']
     column_filters = ['text', 'create_time', 'hidden']
     column_labels = {

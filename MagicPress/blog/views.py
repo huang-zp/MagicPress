@@ -1,7 +1,7 @@
 # coding:utf-8
 import json
 import os
-from flask import redirect, url_for
+from flask import redirect, url_for, flash
 from flask import render_template, request
 from config import bpdir
 from datetime import datetime
@@ -12,6 +12,8 @@ from MagicPress import db, cache
 from flask_security import login_required
 from flask import current_app
 from MagicPress.utils.cache import cached, key_prefix
+from MagicPress.utils.ip import get_ip_info
+from MagicPress.utils.filter import gfw
 # @blog.route('/file', methods=["POST"])
 # def file():
 #     imagefile = request.files['editormd-image-file']
@@ -53,7 +55,8 @@ def index():
 def article(article_id):
     comment_form = CommentForm()
     if comment_form.validate_on_submit():
-        new_comment = Comment(text=comment_form.text.data, username=comment_form.name.data)
+        new_comment = Comment(username=comment_form.name.data)
+        new_comment.text = comment_form.text.data
         new_comment.create_time = datetime.utcnow()
         new_comment.site = comment_form.site.data
         new_comment.email = comment_form.email.data
@@ -62,13 +65,22 @@ def article(article_id):
         new_comment.os = request.user_agent.platform
         new_comment.browser = request.user_agent.browser
         new_comment.article_id = str(request.base_url).split('/')[-1]
+        info = get_ip_info(request.remote_addr)
+        new_comment.location = info['country']+info['region']+info['city']
+        new_comment.network = info['isp']
+        if gfw.filter(comment_form.text.data) or gfw.filter(comment_form.name.data):
+            new_comment.hidden = False
+            flash(u'评论失败、含有敏感字符！')
+        else:
+            new_comment.hidden = True
         db.session.add(new_comment)
         db.session.commit()
     the_article = Article.query.filter_by(id=article_id).first()
     next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
     pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
+    comments = Comment.query.filter_by(article_id=article_id, hidden=True).all()
     return render_template(current_app.config['THEME'] + '/article.html', article=the_article, next_article=next_article,
-                           pre_article=pre_article, comment_form=comment_form)
+                           pre_article=pre_article, comment_form=comment_form, comments=comments)
 
 
 @blog.route('/category', defaults={'article_id': None})
