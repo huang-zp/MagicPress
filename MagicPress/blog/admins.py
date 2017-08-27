@@ -19,6 +19,8 @@ from flask_security import current_user
 from flask_admin.contrib import fileadmin
 from random import Random
 from datetime import datetime
+from MagicPress.utils.qiniuapi import get_link
+
 
 def random_str(randomlength=5):
     _str = ''
@@ -112,10 +114,11 @@ class ArticleView(BaseBlogView):
             print filename
             file_path = os.path.join(bpdir, 'static/editor.md/photoupdate/', filename)
             image_file.save(file_path)
+            qiniu_link = get_link(file_path, filename)
             data = {
                 'success': 1,
                 'message': 'image of editor.md',
-                'url': '/static/editor.md/photoupdate/' + filename
+                'url': qiniu_link
             }
             return json.dumps(data)
         else:
