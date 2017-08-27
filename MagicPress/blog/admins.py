@@ -20,7 +20,7 @@ from flask_admin.contrib import fileadmin
 from random import Random
 from datetime import datetime
 from MagicPress.utils.qiniuapi import get_link
-
+from MagicPress.utils.tinifyapi import ting_pic
 
 def random_str(randomlength=5):
     _str = ''
@@ -113,8 +113,10 @@ class ArticleView(BaseBlogView):
             filename = str(date.today()) + '-' + random_str() + '-' + filename
             print filename
             file_path = os.path.join(bpdir, 'static/editor.md/photoupdate/', filename)
+            qiniu_path = os.path.join(bpdir, 'static/blog/qiniu_pic/', filename)
             image_file.save(file_path)
-            qiniu_link = get_link(file_path, filename)
+            ting_pic(file_path, qiniu_path)
+            qiniu_link = get_link(qiniu_path, filename)
             data = {
                 'success': 1,
                 'message': 'image of editor.md',
