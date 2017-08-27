@@ -171,7 +171,8 @@ class ArticleView(BaseBlogView):
         filename = ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
-
+        if not article_form.print_submit.data:
+            return redirect(url_for('.edit_get_form', article_id=new_article.id))
         return redirect('/huangzp/article')
 
     @expose('/edit_get_form/<article_id>', methods=["GET", "POST"])
@@ -259,6 +260,8 @@ class ArticleView(BaseBlogView):
         new_filename = ' '.join(article_form.title.data.split())+'.md'
         with codecs.open(bpdir+'/static/blog/mdfile/'+new_filename, 'w',  encoding='utf-8') as f:
             f.write(article_form.text.data)
+        if not article_form.print_submit.data:
+            return redirect(url_for('.edit_get_form', article_id=the_article.id))
         return redirect('/huangzp/article')
 
     @expose('/do_file',methods=["POST"])
