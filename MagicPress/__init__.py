@@ -62,7 +62,7 @@ def create_app():
     admin.add_view(TagView(db.session, name=u'标签'))
     admin.add_view(PictureView(db.session, name=u'配图库'))
     admin.add_view(MdFileView(path, name=u'备份文件'))
-    admin.add_view(CommentView(db.session, name=u'评论(coding)'))
+    admin.add_view(CommentView(db.session, name=u'评论'))
     admin.add_view(BackView(name=u"Go Back!"))
 
     # @app.before_first_request

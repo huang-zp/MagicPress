@@ -14,23 +14,12 @@ from flask import current_app
 from MagicPress.utils.cache import cached, key_prefix
 from MagicPress.utils.ip import get_ip_info
 from MagicPress.utils.filter import gfw
-# @blog.route('/file', methods=["POST"])
-# def file():
-#     imagefile = request.files['editormd-image-file']
-#     filepath = os.path.join(bpdir, 'static/editor.md/photoupdate/', imagefile.filename)
-#     imagefile.save(filepath)
-#     data = {
-#         'success': 1,
-#         'message': 'image of editor.md',
-#         'url': 'static/editor.md/photoupdate/' + imagefile.filename
-#     }
-#     return json.dumps(data)
 
 
-@cache.cached(key_prefix='get_theme')
+# @cache.cached(key_prefix='get_theme')
 def get_theme():
     with open(bpdir+'/static/theme', 'r') as f:
-       theme = f.read()
+       theme = f.read().strip()
     return theme
 
 
@@ -45,7 +34,7 @@ def change_theme(theme):
 
 @blog.route('/', methods=["GET", "POST"])
 # @cached(timeout=5 * 60, key='blog_view_%s')
-@cache.cached(timeout=300, key_prefix=key_prefix, unless=None)
+# @cache.cached(timeout=300, key_prefix=key_prefix, unless=None)
 def index():
 
     print get_theme()
@@ -60,7 +49,7 @@ def index():
 
 
 @blog.route('/article/<int:article_id>', methods=["GET", "POST"])
-@cached()
+# @cached()
 def article(article_id):
     comment_form = CommentForm()
     if comment_form.validate_on_submit():
@@ -94,7 +83,7 @@ def article(article_id):
 
 @blog.route('/category', defaults={'article_id': None})
 @blog.route('/category/<int:article_id>', methods=["GET", "POST"])
-@cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
+# @cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
 def category(article_id):
     if not article_id:
         categories = Category.query.all()
@@ -105,7 +94,7 @@ def category(article_id):
 
 
 @blog.route('/archive', methods=["GET", "POST"])
-@cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
+# @cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
 def archive():
     all_articles = Article.query.order_by(Article.create_time.desc()).all()
     time_list = {}
@@ -135,3 +124,16 @@ def comment(article_id):
     if comment_form.validate_on_submit():
         pass
     return redirect(url_for('blog.article', article_id=article_id))
+
+
+# @blog.route('/file', methods=["POST"])
+# def file():
+#     imagefile = request.files['editormd-image-file']
+#     filepath = os.path.join(bpdir, 'static/editor.md/photoupdate/', imagefile.filename)
+#     imagefile.save(filepath)
+#     data = {
+#         'success': 1,
+#         'message': 'image of editor.md',
+#         'url': 'static/editor.md/photoupdate/' + imagefile.filename
+#     }
+#     return json.dumps(data)

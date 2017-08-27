@@ -20,7 +20,6 @@ from flask_admin.contrib import fileadmin
 from random import Random
 from datetime import datetime
 
-
 def random_str(randomlength=5):
     _str = ''
     chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
