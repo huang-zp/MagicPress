@@ -1,8 +1,14 @@
 # encoding:utf8
+from flask import current_app
+
+
 def get_ip_info(ip):
     import requests
+    try:
+        r = requests.get('http://ip.taobao.com/service/getIpInfo.php?ip=%s' % ip)
+    except Exception as e:
+        current_app.logger.error(e)
 
-    r = requests.get('http://ip.taobao.com/service/getIpInfo.php?ip=%s' % ip)
     if r.json()['code'] == 0:
         info = r.json()['data']
 
@@ -12,7 +18,6 @@ def get_ip_info(ip):
         city = info['city']
         isp = info['isp']
 
-        print u'国家: %s\n区域: %s\n省份: %s\n城市: %s\n运营商: %s\n' % (country, area, region, city, isp)
     else:
-        print "ERRO! ip: %s" % ip
+        current_app.logger.info("ERRO! ip: %s" + ip)
     return info

@@ -83,10 +83,13 @@ class ArticleView(BaseBlogView):
 
     # 覆盖path默认显示
     def _list_thumbnail(view, context, model, name):
-        if not model.picture or not model.picture.path:
-            return ''
-        return Markup('<img src="%s">' % url_for('static',
-                                                 filename='blog/picture/' + 'thumb-' + model.picture.path))
+        try:
+            if not model.picture or not model.picture.path:
+                return ''
+            return Markup('<img src="%s">' % url_for('static',
+                                                     filename='blog/picture/' + 'thumb-' + model.picture.path))
+        except Exception as e:
+            current_app.logger.error(e)
     column_formatters = dict(text=macro('render_text'), abstract=macro('render_abstract'), picture=_list_thumbnail)
 
     column_labels = {
@@ -109,20 +112,22 @@ class ArticleView(BaseBlogView):
     def editor_pic(self):
         image_file = request.files['editormd-image-file']
         if image_file and allowed_photo(image_file.filename):
-            filename = secure_filename(image_file.filename)
-            filename = str(date.today()) + '-' + random_str() + '-' + filename
-            print filename
-            file_path = os.path.join(bpdir, 'static/editor.md/photoupdate/', filename)
-            qiniu_path = os.path.join(bpdir, 'static/blog/qiniu_pic/', filename)
-            image_file.save(file_path)
-            ting_pic(file_path, qiniu_path)
-            qiniu_link = get_link(qiniu_path, filename)
-            data = {
-                'success': 1,
-                'message': 'image of editor.md',
-                'url': qiniu_link
-            }
-            return json.dumps(data)
+            try:
+                filename = secure_filename(image_file.filename)
+                filename = str(date.today()) + '-' + random_str() + '-' + filename
+                file_path = os.path.join(bpdir, 'static/editor.md/photoupdate/', filename)
+                qiniu_path = os.path.join(bpdir, 'static/blog/qiniu_pic/', filename)
+                image_file.save(file_path)
+                ting_pic(file_path, qiniu_path)
+                qiniu_link = get_link(qiniu_path, filename)
+                data = {
+                    'success': 1,
+                    'message': 'image of editor.md',
+                    'url': qiniu_link
+                }
+                return json.dumps(data)
+            except Exception as e:
+                current_app.logger.error(e)
         else:
             return u"没有获得图片或图片类型不支持"
 
@@ -167,10 +172,12 @@ class ArticleView(BaseBlogView):
             db.session.add(the_picture)
         db.session.add(new_article)
         db.session.commit()
-
-        filename = ' '.join(article_form.title.data.split())+'.md'
-        with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
-            f.write(article_form.text.data)
+        try:
+            filename = ' '.join(article_form.title.data.split())+'.md'
+            with codecs.open(bpdir+'/static/blog/mdfile/'+filename, 'w',  encoding='utf-8') as f:
+                f.write(article_form.text.data)
+        except Exception as e:
+            current_app.logger.info(e)
         if not article_form.print_submit.data:
             return redirect(url_for('.edit_get_form', article_id=new_article.id))
         return redirect('/huangzp/article')
@@ -257,9 +264,12 @@ class ArticleView(BaseBlogView):
 
         db.session.add(the_article)
         db.session.commit()
-        new_filename = ' '.join(article_form.title.data.split())+'.md'
-        with codecs.open(bpdir+'/static/blog/mdfile/'+new_filename, 'w',  encoding='utf-8') as f:
-            f.write(article_form.text.data)
+        try:
+            new_filename = ' '.join(article_form.title.data.split())+'.md'
+            with codecs.open(bpdir+'/static/blog/mdfile/'+new_filename, 'w',  encoding='utf-8') as f:
+                f.write(article_form.text.data)
+        except Exception as e:
+            current_app.logger.info(e)
         if not article_form.print_submit.data:
             return redirect(url_for('.edit_get_form', article_id=the_article.id))
         return redirect('/huangzp/article')
@@ -268,12 +278,15 @@ class ArticleView(BaseBlogView):
     def do_file(self):
         md_file = request.files['file']
         if md_file and allowed_file(md_file.filename):
-            fname = secure_filename(md_file.filename)
-            ext = fname.rsplit('.', 1)[1]
-            unix_time = int(time.time())
-            new_filename = str(unix_time) + '.' + ext
-            filepath = os.path.join(bpdir, 'static/blog/read_mdfile/', new_filename)
-            md_file.save(filepath)
+            try:
+                fname = secure_filename(md_file.filename)
+                ext = fname.rsplit('.', 1)[1]
+                unix_time = int(time.time())
+                new_filename = str(unix_time) + '.' + ext
+                filepath = os.path.join(bpdir, 'static/blog/read_mdfile/', new_filename)
+                md_file.save(filepath)
+            except Exception as e:
+                current_app.logger.info(e)
             with open(filepath, 'r') as f:
                 file_context = f.read()
 
@@ -386,8 +399,6 @@ class CategoryView(BaseBlogView):
         super(CategoryView, self).__init__(Category, session, **kwargs)
 
 
-
-
 # 钩子函数，Picture删除数据后执行
 @listens_for(Picture, 'after_delete')
 def del_image(mapper, connection, target):
@@ -396,14 +407,14 @@ def del_image(mapper, connection, target):
         try:
             os.remove(os.path.join(bpdir, 'static/blog/picture', target.path))
         except OSError:
-            pass
+            current_app.logger.info(OSError)
 
         # Delete thumbnail
         try:
             os.remove(os.path.join(bpdir, 'static/blog/picture',
                                    'thumb-' + target.path))
         except OSError:
-            pass
+            current_app.logger.info(OSError)
 
 
 class PictureView(BaseBlogView):
@@ -424,10 +435,13 @@ class PictureView(BaseBlogView):
 
     # 覆盖path默认显示
     def _list_thumbnail(view, context, model, name):
-        if not model.path:
-            return ''
-        return Markup('<img src="%s">' % url_for('static',
-                                                 filename='blog/picture/' + 'thumb-' + model.path))
+        try:
+            if not model.path:
+                return ''
+            return Markup('<img src="%s">' % url_for('static',
+                                                     filename='blog/picture/' + 'thumb-' + model.path))
+        except Exception as e:
+            current_app.logger.error(e)
 
     column_formatters = {
         'path': _list_thumbnail
@@ -435,7 +449,6 @@ class PictureView(BaseBlogView):
 
     # 处理上传图片名称
     def prefix_name(obj, file_data):
-
         parts = os.path.splitext(file_data.filename)
         return str(date.today()) + '-' + random_str() + '-' + parts[0]+parts[1]
         #return secure_filename('file-%s%s' % (parts[0].encode('utf-8'), parts[1]))

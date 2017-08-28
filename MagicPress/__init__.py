@@ -1,13 +1,17 @@
 # -*- coding:utf-8 -*-
 # __author__ = 'huangzp'
 import os
+import logging
+import logging.handlers
+from logging.handlers import SMTPHandler
+from logging import Formatter
 from flask import Flask, url_for
 from MagicPress.extensions import db, bootstrap, migrate, moment, cache
 from flask_admin import Admin, helpers
 from flask_admin.contrib import fileadmin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
-from config import Config, bpdir
+from config import Config, bpdir, basedir
 from flask_security import Security, SQLAlchemyUserDatastore, utils
 from MagicPress.auth.models import User, Role
 from MagicPress.auth.admins import UserView, RoleView, BackView
@@ -18,7 +22,7 @@ path = os.path.join(bpdir, 'static/blog/mdfile')
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
-
+ADMINS = ['******@qq.com']
 
 def create_app():
     app = Flask(__name__)
@@ -79,5 +83,36 @@ def create_app():
     #     user_datastore.add_role_to_user('admin@example.com', 'admin')
     #     db.session.commit()
 
+    app.logger.setLevel(logging.INFO)
+    print basedir
+    print bpdir
+    info_log = basedir + '/logs/magicpress-info.log'
+    print info_log
+    info_file_handler = logging.handlers.RotatingFileHandler(
+        info_log, maxBytes=1048576, backupCount=20)
+    info_file_handler.setLevel(logging.INFO)
+    info_file_handler.setFormatter(
+                Formatter('%(asctime)s %(levelname)s: %(message)s '
+                          '[in %(pathname)s:%(lineno)d]')
+    )
+    app.logger.addHandler(info_file_handler)
+
+    mail_handler = SMTPHandler('smtp.163.com',
+                               '******@163.com',
+                               ADMINS, 'YourApplication Failed',
+                               ('******@163.com', '******'))
+    mail_handler.setLevel(logging.ERROR)
+    mail_handler.setFormatter(Formatter('''
+    Message type:       %(levelname)s
+    Location:           %(pathname)s:%(lineno)d
+    Module:             %(module)s
+    Function:           %(funcName)s
+    Time:               %(asctime)s
+
+    Message:
+
+    %(message)s
+    '''))
+    app.logger.addHandler(mail_handler)
 
     return app

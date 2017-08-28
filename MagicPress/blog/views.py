@@ -1,7 +1,7 @@
 # coding:utf-8
 import json
 import os
-from flask import redirect, url_for, flash
+from flask import redirect, url_for, flash, current_app
 from flask import render_template, request
 from config import bpdir
 from datetime import datetime
@@ -114,7 +114,7 @@ def archive():
             time_list[flag] = year_month
             article_list.append([])
             article_list[flag].append(the_article)
-    print time_list
+
     return render_template(get_theme() + '/archive.html', time_list=time_list, article_list=article_list)
 
 
