@@ -90,13 +90,16 @@ def category(article_id):
         return render_template(get_theme() + '/categories.html', categories=categories)
     else:
         articles = Category.query.filter_by(id=article_id).first().articles
+
+        articles = [article for article in articles if article.state is True]
+
         return render_template(get_theme() + '/category.html', articles=articles)
 
 
 @blog.route('/archive', methods=["GET", "POST"])
 # @cache.cached(timeout=300, key_prefix='blog_view_%s', unless=None)
 def archive():
-    all_articles = Article.query.order_by(Article.create_time.desc()).all()
+    all_articles = Article.query.filter_by(state=True).order_by(Article.create_time.desc()).all()
     time_list = {}
     article_list = [[]]
     flag = 0

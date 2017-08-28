@@ -426,7 +426,6 @@ class PictureView(BaseBlogView):
     def _list_thumbnail(view, context, model, name):
         if not model.path:
             return ''
-        print type(model.path)
         return Markup('<img src="%s">' % url_for('static',
                                                  filename='blog/picture/' + 'thumb-' + model.path))
 
