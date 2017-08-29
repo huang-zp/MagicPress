@@ -307,7 +307,7 @@ gulp.task("cm-addon", function() {
 }); 
 /*
 gulp.task("jsdoc", function(){
-    return gulp.src(["./src/editormd.js", "README.md"])
+    return gulp.src(["./src/editormd.js", "README.md.md"])
                .pipe(jsdoc.parser())
                .pipe(jsdoc.generator("./docs/html"));
 });
