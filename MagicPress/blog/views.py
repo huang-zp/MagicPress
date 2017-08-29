@@ -14,7 +14,7 @@ from flask import current_app
 from MagicPress.utils.cache import cached, key_prefix
 from MagicPress.utils.ip import get_ip_info
 from MagicPress.utils.filter import gfw
-
+from logging import Formatter
 
 # @cache.cached(key_prefix='get_theme')
 def get_theme():
@@ -36,7 +36,6 @@ def change_theme(theme):
 # @cached(timeout=5 * 60, key='blog_view_%s')
 # @cache.cached(timeout=300, key_prefix=key_prefix, unless=None)
 def index():
-
     print get_theme()
     page = request.args.get('page', 1, type=int)
     pagination = Article.query.order_by(Article.create_time.desc()).filter_by(state=True).paginate(
@@ -53,6 +52,7 @@ def index():
 def article(article_id):
     comment_form = CommentForm()
     if comment_form.validate_on_submit():
+        from MagicPress.utils.tasks import send_async_email
         new_comment = Comment(username=comment_form.name.data)
         new_comment.text = comment_form.text.data
         new_comment.create_time = datetime.utcnow()
@@ -71,6 +71,15 @@ def article(article_id):
             flash(u'评论失败、含有敏感字符！')
         else:
             new_comment.hidden = True
+
+        message_details = {}
+        message_details['subject'] = 'New Comment'
+        message_details['recipients'] = [current_app.config['ADMIN_EMAIL']]
+        message_details['body'] = "Name:     %s\nEmail:     %s\nSite:    %s\nLocation:    %s\n" \
+                                  "Hihhen:    %s\nText:\n\n             %s" % (
+            comment_form.name.data, current_app.config['ADMIN_EMAIL'], comment_form.site.data,
+            info['country']+info['region']+info['city'], str(new_comment.hidden), comment_form.text.data)
+        send_async_email.delay(message_details)
         db.session.add(new_comment)
         db.session.commit()
     the_article = Article.query.filter_by(id=article_id).first()

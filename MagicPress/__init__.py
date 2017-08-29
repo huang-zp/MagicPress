@@ -6,42 +6,52 @@ import logging.handlers
 from logging.handlers import SMTPHandler
 from logging import Formatter
 from flask import Flask, url_for
-from MagicPress.extensions import db, bootstrap, migrate, moment, cache
+from celery import Celery
+from MagicPress.extensions import db, bootstrap, migrate, moment, cache, mail
 from flask_admin import Admin, helpers
 from flask_admin.contrib import fileadmin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
 from config import Config, bpdir, basedir
+from flask_mail import Message
 from flask_security import Security, SQLAlchemyUserDatastore, utils
 from MagicPress.auth.models import User, Role
 from MagicPress.auth.admins import UserView, RoleView, BackView
 from MagicPress.blog.models import Category, Comment, Article, Tag
 from MagicPress.blog.admins import ArticleView, CategoryView, CommentView, TagView, PictureView, MdFileView
-
+from MagicPress.utils._make_celery import make_celery
 path = os.path.join(bpdir, 'static/blog/mdfile')
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
-ADMINS = ['******@qq.com']
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object(Config)
-    Config.init_app(app)
-    # admin.init_app(app)
-    bootstrap.init_app(app)
-    db.init_app(app)
-    migrate.init_app(app, db)
-    moment.init_app(app)
-    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
-    admin = Admin(app, u'夜如海洋', base_template='layout.html', template_mode='bootstrap3', index_view=
+app = Flask(__name__)
+app.config.from_object(Config)
+Config.init_app(app)
+bootstrap.init_app(app)
+db.init_app(app)
+migrate.init_app(app, db)
+moment.init_app(app)
+mail.init_app(app)
+
+cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+admin = Admin(app, u'夜如海洋', base_template='layout.html', template_mode='bootstrap3', index_view=
                   AdminIndexView(
                       name=u'城里 夜如海洋',
                       url='/huangzp',
                       template='admin/index.html'
                   ))
 
-    security = Security(app, user_datastore)
+security = Security(app, user_datastore)
+
+celery = make_celery(app)
+
+from MagicPress.utils.tasks import send_async_email
+
+def create_app():
+
+    # admin.init_app(app)
+
 
     @security.context_processor
     def security_context_processor():
@@ -56,7 +66,6 @@ def create_app():
     from .auth import auth as auth_blueprint
     app.register_blueprint(blog_blueprint)
     app.register_blueprint(auth_blueprint)
-
 
     admin.add_view(RoleView(db.session, name=u'角色'))
     admin.add_view(UserView(db.session, name=u'作者'))
@@ -98,9 +107,9 @@ def create_app():
     app.logger.addHandler(info_file_handler)
 
     mail_handler = SMTPHandler('smtp.163.com',
-                               '******@163.com',
-                               ADMINS, 'YourApplication Failed',
-                               ('******@163.com', '******'))
+                               app.config['MAIL_USERNAME'],
+                               app.config['ADMIN_EMAIL'], 'YourApplication Failed',
+                               (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD']))
     mail_handler.setLevel(logging.ERROR)
     mail_handler.setFormatter(Formatter('''
     Message type:       %(levelname)s
@@ -114,5 +123,6 @@ def create_app():
     %(message)s
     '''))
     app.logger.addHandler(mail_handler)
+
 
     return app

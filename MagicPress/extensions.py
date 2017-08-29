@@ -6,6 +6,7 @@ from flask_admin import Admin, AdminIndexView
 from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_cache import Cache
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
@@ -13,3 +14,4 @@ bootstrap = Bootstrap()
 migrate = Migrate()
 moment = Moment()
 cache = Cache()
+mail = Mail()
