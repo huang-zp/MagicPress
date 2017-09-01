@@ -33,13 +33,13 @@ class Config:
 
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
     RESULT_BACKEND = 'redis://localhost:6379/0'
-    MAIL_SERVER = 'smtp.163.com'
+    MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = "15518997683@163.com"
-    MAIL_PASSWORD = "asd123456"
-    MAIL_DEFAULT_SENDER = '15518997683@163.com'
-    ADMIN_EMAIL = '917086506@qq.com'
+    MAIL_USERNAME = "******"
+    MAIL_PASSWORD = "******"
+    MAIL_DEFAULT_SENDER = '******'
+    ADMIN_EMAIL = '******'
 
     @staticmethod
     def init_app(app):

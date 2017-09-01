@@ -79,12 +79,12 @@ def article(article_id):
                                   "Hihhen:    %s\nText:\n\n             %s" % (
             comment_form.name.data, current_app.config['ADMIN_EMAIL'], comment_form.site.data,
             info['country']+info['region']+info['city'], str(new_comment.hidden), comment_form.text.data)
-        send_async_email.delay(message_details)
+        send_async_email.deply(message_details)
         db.session.add(new_comment)
         db.session.commit()
     the_article = Article.query.filter_by(id=article_id).first()
-    next_article = db.session.query(Article).filter(Article.id < article_id).order_by(Article.id.desc()).first()
-    pre_article = db.session.query(Article).filter(Article.id > article_id).order_by(Article.id.asc()).first()
+    next_article = db.session.query(Article).filter(Article.id < article_id, Article.state == True).order_by(Article.id.desc()).first()
+    pre_article = db.session.query(Article).filter(Article.id > article_id, Article.state == True).order_by(Article.id.asc()).first()
     comments = Comment.query.filter_by(article_id=article_id, hidden=True).all()
     return render_template(get_theme() + '/article.html', article=the_article, next_article=next_article,
                            pre_article=pre_article, comment_form=comment_form, comments=comments)

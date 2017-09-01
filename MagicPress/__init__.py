@@ -20,6 +20,7 @@ from MagicPress.auth.admins import UserView, RoleView, BackView
 from MagicPress.blog.models import Category, Comment, Article, Tag
 from MagicPress.blog.admins import ArticleView, CategoryView, CommentView, TagView, PictureView, MdFileView
 from MagicPress.utils._make_celery import make_celery
+from celery import signals
 path = os.path.join(bpdir, 'static/blog/mdfile')
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -106,7 +107,7 @@ def create_app():
     )
     app.logger.addHandler(info_file_handler)
 
-    mail_handler = SMTPHandler('smtp.163.com',
+    mail_handler = SMTPHandler('smtp.qq.com',
                                app.config['MAIL_USERNAME'],
                                app.config['ADMIN_EMAIL'], 'YourApplication Failed',
                                (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD']))
@@ -126,3 +127,4 @@ def create_app():
 
 
     return app
+
