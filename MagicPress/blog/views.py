@@ -79,7 +79,7 @@ def article(article_id):
                                   "Hihhen:    %s\nText:\n\n             %s" % (
             comment_form.name.data, current_app.config['ADMIN_EMAIL'], comment_form.site.data,
             info['country']+info['region']+info['city'], str(new_comment.hidden), comment_form.text.data)
-        send_async_email.deply(message_details)
+        send_async_email.delay(message_details)
         db.session.add(new_comment)
         db.session.commit()
     the_article = Article.query.filter_by(id=article_id).first()
