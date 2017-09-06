@@ -1,4 +1,6 @@
->**what is MagicPress ?。这是一款基于Flask的个人博客。页面简洁，但是功能齐全。集成了Editor.md，所以可以使用MakeDown语法编写文章。创新点在于Editor.md与Flask-admin的完美结合、Editor.md与七牛云API的结合、多主题功能、还有各种提升体验的小创新**
+# 部署网址：http://huangzp.com/
+
+>**What is MagicPress ?。这是一款基于Flask的个人博客。页面简洁，但是功能齐全。集成了Editor.md，所以可以使用MakeDown语法编写文章。创新点在于Editor.md与Flask-admin的完美结合、Editor.md与七牛云API的结合、多主题功能、还有各种提升体验的小创新**
 
 **这个网站就是MagicPress部署后的效果，前台如你所见**
 
@@ -55,9 +57,6 @@ flask-cache，写了缓存的自定义装饰器，(redis正在写)
 
 MagicPress写到现在感觉对Flask的项目结构化有了更清晰的理解，对Flask-admin的使用更加顺手，可以更快的定位问题与设计解决办法，增加功能块的时候会先画流程再编码
 
-2017-08-28 00：32 我在公司...
-
-源码地址：https://github.com/huang-zp/MagicPress
 
 
 
