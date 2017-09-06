@@ -1,4 +1,4 @@
-# 部署网址：http://huangzp.com/
+## 部署网址：http://huangzp.com/
 
 >**What is MagicPress ?。这是一款基于Flask的个人博客。页面简洁，但是功能齐全。集成了Editor.md，所以可以使用MakeDown语法编写文章。创新点在于Editor.md与Flask-admin的完美结合、Editor.md与七牛云API的结合、多主题功能、还有各种提升体验的小创新**
 
