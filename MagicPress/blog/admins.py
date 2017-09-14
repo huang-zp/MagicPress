@@ -81,6 +81,8 @@ class ArticleView(BaseBlogView):
 
     form_excluded_columns = ['title', 'text']
 
+    column_default_sort = ('id', True)
+
     # 覆盖path默认显示
     def _list_thumbnail(view, context, model, name):
         try:
@@ -317,6 +319,7 @@ class CommentView(BaseBlogView):
     column_editable_list = ['hidden']
 
     column_searchable_list = ['text']
+    column_default_sort = ('id', True)
     column_filters = ['text', 'create_time', 'hidden']
     column_labels = {
         'id': u'序号',
@@ -432,6 +435,8 @@ class PictureView(BaseBlogView):
         'weather': u'天气',
         'path': u'缩略图'
     }
+
+    column_default_sort = ('id', True)
 
     # 覆盖path默认显示
     def _list_thumbnail(view, context, model, name):
