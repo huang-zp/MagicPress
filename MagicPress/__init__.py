@@ -65,8 +65,12 @@ def create_app():
 
     from .blog import blog as blog_blueprint
     from .auth import auth as auth_blueprint
+    from .point import point as point_blueprint
     app.register_blueprint(blog_blueprint)
     app.register_blueprint(auth_blueprint)
+    app.config['SERVER_NAME'] = 'huangzp.com'
+    app.register_blueprint(blog_blueprint, subdomain='blog')
+    app.register_blueprint(point_blueprint, subdomain='point')
 
     admin.add_view(RoleView(db.session, name=u'角色'))
     admin.add_view(UserView(db.session, name=u'作者'))
