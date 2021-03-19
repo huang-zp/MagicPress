@@ -30,7 +30,7 @@ Flask-WTF==0.14.2
 idna==2.5
 ipaddress==1.0.18
 itsdangerous==0.24
-Jinja2==2.9.6
+Jinja2==2.11.3
 kombu==4.1.0
 Mako==1.0.7
 MarkupSafe==1.0
