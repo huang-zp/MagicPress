@@ -1,31 +1,7 @@
-## 部署网址：http://huangzp.com/
 
->**What is MagicPress ?。这是一款基于Flask的个人博客。页面简洁，但是功能齐全。集成了Editor.md，所以可以使用MakeDown语法编写文章。创新点在于Editor.md与Flask-admin的完美结合、Editor.md与七牛云API的结合、多主题功能、还有各种提升体验的小创新**
 
-**这个网站就是MagicPress部署后的效果，前台如你所见**
+>**What is MagicPress ?。这是一款基于Flask的个人博客。页面简洁，但是功能齐全。集成了Editor.md，所以可以使用MakeDown语法编写文章。创新点在于Editor.md与Flask-admin的完美结合、Editor.md与七牛云API的结合、多主题功能
 
-## 登陆后部分后台效果图
-
-**后台主页：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-FyiO9-admin.png)
-
-**文章管理：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-dNwDk-adminarticle.png)
-
-**配图管理：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-aHaWa-adminpicture.png)
-
-**评论管理：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-PUYVz-comment.png)
-
-**主题更换：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-Evd8V-theme.png)
-
-**编写文章：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-JjPJa-write.png)
-
-**修改文章：**
-![](http://oumkbl9du.bkt.clouddn.com/2017-08-27-tEXMN-savewrite.png)
 
 
 ## 技术点：
